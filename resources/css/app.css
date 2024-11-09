@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html[data-menu-color=light] {
+    --tw-menu-bg: #0b194e;
+    --tw-menu-item-color: rgb(255, 255, 255);
+    --tw-menu-item-active-color: #00c677;
+    --tw-menu-item-hover-color: #00c677;
+  }
+  
+  html[data-menu-color=dark],
+  html[data-mode=dark][data-menu-color=light] {
+    --tw-menu-bg: #0b194e;
+    --tw-menu-item-color: rgb(144, 151, 167);
+    --tw-menu-item-active-color: #00c677;
+    --tw-menu-item-hover-color: #00c677;
+  }
+:root {
+    --swiper-theme-color: #25723e;
+}
+
+.selectize-input.full {
+    background-color: transparent !important;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.bg-primary {
+    background-color: #0b194e !important;
+}
+.text-primary{
+    color: #0b194e !important;
+}
+/* .text-primary {
+    background-color: #932f2f !important;
+} */
+
+.form-input {
+    @apply focus:ring-1 focus:ring-[#0b194e] placeholder:opacity-60;
+}
+
+.btn {
+    &:not(label):not(span) {
+        @apply text-xs;
+    }
+
+    &.bg-primary {
+        @apply text-gray-200;
+    }
+}
+
+/* --tw-menu-bg: #932f2f;
+--tw-menu-item-color: rgb(144, 151, 167);
+--tw-menu-item-active-color: #eedb7d;
+--tw-menu-item-hover-color: #f69a38; */
+#social-links li {
+    display: inline-block;
+    padding: 4px;
+    text-align: center;
+    list-style: none;
+}
+
+.swiper-slide::after {
+    background: linear-gradient(180deg,
+            rgba(37, 114, 62, 0.7) -29.32%,
+            #25723e 100%);
+    box-shadow: -4px -56px 50px 0px #25723e;
+}
+
+#scannerBarcode video {
+    width: 100% !important;
+    height: 100% !important;
+}
