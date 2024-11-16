@@ -20,7 +20,7 @@ class InstagramAccountSeeder extends Seeder
                 "username" => "testing",
                 "email"    => "testing@contoh.com",
                 "password" => "123456",
-                "cookie"   => "ig_did=703ED08E-C9C1-40F6-BC32-4940403D3B8F; csrftoken=zwGPkkUAaZ40bvQSKzZtvKkHIpm9Ub8R; datr=7vA2ZzkjpAYCboiy-wKeeTqg; wd=1598x818; dpr=1; mid=Zzbw7gAEAAFDXjD47A9S9HdJUppS; ig_nrcb=1; ds_user_id=8187754200; sessionid=8187754200%3AnDjAsVX7I5PpXW%3A23%3AAYfFyCjsh3O_0D9CTWOqLrrEaT_Z3rvPiYczPpya4g",
+                "cookie"   => 'csrftoken=mOQFi9X6CUpRblMr0u9w_D; wd=1536x730; dpr=1.25; mid=ZzfqtgALAAFDo39ua6VF_RuGraqR; datr=tuo3Z7AJc223s3Qne-r1-MYs; ig_did=7C3747C1-1DF3-4B7A-A10E-073DAD7B41E8; ig_nrcb=1; sessionid=9419178101%3AMnQfKLNaAOwgsr%3A18%3AAYdRwtwY8qCCxqR7HLmeONsZqqcMZhsp5dDc3lIBRA; ds_user_id=9419178101; rur="EAG\0549419178101\0541763306200:01f72d8a6eb99d2ae4de1dc57f36ac8ba26146b1cfff35ca8ad54a34b5ccbb5de0a5bdb0"',
                 "status"   => 1,
             ]
         );

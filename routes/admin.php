@@ -14,6 +14,11 @@ Route::middleware('auth')->group(
             \App\Livewire\Admin\Dashboard::class
         )->name('dashboard');
         Route::get(
+            '/instagram-account-managements',
+            \App\Livewire\Admin\InstagramAccountManagement\Content::class
+        )
+            ->name('instagram-account-managements')->can('read instagram account management');
+        Route::get(
             '/user-managements',
             \App\Livewire\Admin\UserManagement\Content::class
         )

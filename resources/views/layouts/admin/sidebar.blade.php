@@ -25,25 +25,33 @@
                  ])
                  @if (auth()->user()->can('read role management') ||
                          auth()->user()->can('read user management') ||
-                         auth()->user()->can('rack.read') ||
-                         auth()->user()->can('warehouse.read'))
+                         auth()->user()->can('read instagram account management'))
                      <li class="menu-title">Master</li>
-                     @include('layouts.admin.components.side-link-multiple', [
-                         'icon' => 'mdi mdi-account-lock-open-outline',
-                         'label' => 'Master User',
-                         'childrens' => [
-                             [
-                                 'label' => 'User',
-                                 'route' => 'admin.user-managements', // String biasa
-                                 'permissions' => 'read user management',
+                     @can('read instagram account management')
+                         @include('layouts.admin.components.side-link', [
+                             'icon' => 'mdi mdi-instagram',
+                             'label' => 'Instagram Account',
+                             'route' => 'admin.instagram-account-managements', // String biasa
+                         ])
+                     @endcan
+                     @if (auth()->user()->can('read role management') || auth()->user()->can('read user management'))
+                         @include('layouts.admin.components.side-link-multiple', [
+                             'icon' => 'mdi mdi-account-lock-open-outline',
+                             'label' => 'Master User',
+                             'childrens' => [
+                                 [
+                                     'label' => 'User',
+                                     'route' => 'admin.user-managements', // String biasa
+                                     'permissions' => 'read user management',
+                                 ],
+                                 [
+                                     'label' => 'Role',
+                                     'route' => 'admin.role-managements', // String biasa
+                                     'permissions' => 'read role management',
+                                 ],
                              ],
-                             [
-                                 'label' => 'Role',
-                                 'route' => 'admin.role-managements', // String biasa
-                                 'permissions' => 'read role management',
-                             ],
-                         ],
-                     ])
+                         ])
+                     @endif
                  @endif
                  <li class="menu-title">Report</li>
                  @can('read log activities management')
