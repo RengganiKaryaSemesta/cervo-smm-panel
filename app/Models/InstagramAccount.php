@@ -9,10 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class InstagramAccount extends Model
 {
-    use SoftDeletes , Auditable;
+    use SoftDeletes, Auditable;
     protected $fillable = [
         "username",
-        "name",
         "email",
         "password",
         "cookie",
