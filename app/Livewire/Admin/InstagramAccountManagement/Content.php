@@ -27,7 +27,7 @@ class Content extends Component
     public function edit($id)
     {
         try {
-            $data            = InstagramAccount::with('permissions')->findOrFail($id);
+            $data            = InstagramAccount::findOrFail($id);
             $this->formTitle = 'Edit Data';
             $this->dispatch(
                 'form-event',
@@ -63,7 +63,7 @@ class Content extends Component
                 $data->delete();
             }
             $data->save();
-            activity('User Restore/Delete')
+            activity('Instagram Account Restore/Delete')
                 ->causedBy(auth()->user())
                 ->performedOn($data)
                 ->log($message);
@@ -86,6 +86,6 @@ class Content extends Component
             [
                 'data' => $this->getData(),
             ]
-        )->title('Role Management')->layout('layouts.admin.app');
+        )->title('Instagram Account Management')->layout('layouts.admin.app');
     }
 }
