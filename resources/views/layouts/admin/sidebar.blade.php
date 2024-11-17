@@ -45,6 +45,13 @@
                          ],
                      ])
                  @endif
+                 @can('instagramAccount.read')
+                    @include('layouts.admin.components.side-link', [
+                        'icon' => 'mdi mdi-instagram', 
+                        'label' => 'Account Instagram',
+                        'route' => 'admin.instagram-account-management',
+                    ])
+                @endcan
                  <li class="menu-title">Report</li>
                  @can('read log activities management')
                      @include('layouts.admin.components.side-link', [
@@ -53,6 +60,7 @@
                          'route' => 'admin.log-activities', // String biasa
                      ])
                  @endcan
+                
              </ul>
          </div>
      </div>

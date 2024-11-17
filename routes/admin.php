@@ -28,5 +28,10 @@ Route::middleware('auth')->group(
             \App\Livewire\Admin\LogActivity\Content::class
         )
             ->name('log-activities')->can('read log activities management');
+        Route::get(
+            '/instagram-account-management',
+            \App\Livewire\Admin\InstagramAccountManagement\Content::class
+        )
+            ->name('instagram-account-management')->can('instagramAccount.read');
     }
 );

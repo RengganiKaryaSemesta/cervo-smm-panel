@@ -4,9 +4,10 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class InstagramPermesionSeeder extends Seeder
+class AccountInstagramSeeder extends Seeder
 {
     
     /**
@@ -34,7 +35,7 @@ class InstagramPermesionSeeder extends Seeder
             $role = Role::where('name', 'Super Admin')->first();
             if ($role && !$role->hasPermissionTo($permission)) {
                 $role->givePermissionTo($permission);
-            }
-        }
+            }
+        }
     }
 }
