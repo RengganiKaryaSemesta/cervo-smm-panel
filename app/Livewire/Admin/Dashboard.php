@@ -7,10 +7,34 @@ use Livewire\Component;
 use App\Models\ServiceReport;
 use App\Notifications\InvoicePaid;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Notification;
 
 class Dashboard extends Component
 {
+    // public function mount(){
+    //     $response = Http::withHeaders([
+    //         'Content-Type' => 'application/json',
+    //     ])->post(
+    //         "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" . env('GEMINI_AI_KEY'),
+    //         [
+    //             "contents" => [
+    //                 [
+    //                     "parts" => [
+    //                         ["text" => "Write a story about a magic backpack."]
+    //                     ]
+    //                 ]
+    //             ]
+    //         ]
+    //     );
+        
+    //     // Cek respons
+    //     if ($response->failed()) {
+    //         dd($response->json()); // Untuk debugging jika terjadi error
+    //     }
+        
+    //     dd($response->json());
+    // }
     public function getData(): array
     {
         $grafikTren = [

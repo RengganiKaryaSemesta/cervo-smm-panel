@@ -13,6 +13,107 @@
             </div>
         </div>
     </div>
+    <div x-data="geminiApi" class="p-5">
+        <!-- Input Prompt -->
+        <textarea x-model="prompt" placeholder="Masukkan prompt Anda..." class="w-full p-2 border rounded"></textarea>
+
+        <!-- Tombol Kirim -->
+        <button @click="generateContent" class="px-4 py-2 mt-2 text-white bg-blue-500 rounded">
+            Generate
+        </button>
+
+        <!-- Loader -->
+        <div x-show="loading" class="mt-2">Loading...</div>
+
+        <!-- Tampilkan Hasil -->
+        <div x-show="results.length > 0" class="mt-4">
+            <h3 class="font-bold">Hasil:</h3>
+            <ul>
+                <template x-for="result in results" :key="result">
+                    <li x-text="result" class="mt-2"></li>
+                </template>
+            </ul>
+        </div>
+    </div>
+    @script
+        <script>
+            Alpine.data('geminiApi', () => ({
+                prompt: '', // Input prompt dari user
+                results: ["Rizzal ganteng banget!", "Mas Rizzal tampan! 😍"], // Hasil dari API
+                loading: false, // Status loading
+
+                async generateContent() {
+                    // Validasi input
+                    if (!this.prompt) {
+                        alert('Prompt tidak boleh kosong!');
+                        return;
+                    }
+
+                    this.loading = true; // Tampilkan loader
+                    this.results = []; // Reset hasil
+
+                    try {
+                        // Panggil API Google Gemini
+                        const response = await fetch(
+                            'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyD0aCshDk4hBeZtuqd4nGonofJ7qSkBWQ8', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    contents: [{
+                                        parts: [{
+                                            text: `Buatkan saya 2 kalimat komentar post instagram dengan kategori ini (${this.prompt}), dan pastikan returnnya adalah json dengan schema comments:, maksimal 50 karakter.`
+                                        }],
+                                    }],
+                                    generationConfig: {
+                                        response_mime_type: "application/json",
+                                        response_schema: {
+                                            "type": "object",
+                                            "properties": {
+                                                "comments": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }),
+                            }
+                        );
+
+                        const data = await response.json();
+                        if (data.candidates && data.candidates.length > 0) {
+                            // Ambil teks dari "candidates[0].content.parts[0].text"
+                            const rawText = data.candidates[0].content.parts[0].text;
+                            // Bersihkan teks dari wrapping markdown jika ada
+                            const cleanedText = rawText
+                                .trim() // Hapus spasi atau baris kosong di awal/akhir
+                                .replace(/^```json\n/, '') // Hapus ` ```json\n ` di awal
+                                .replace(/```$/, ''); // Hapus ` ``` ` di akhir // Hapus ``` di akhir
+
+
+                            // // Parse teks menjadi JSON
+                            const parsedResults = JSON.parse(cleanedText);
+                            // Simpan hasil ke dalam this.results
+                            this.results = parsedResults.comments;
+                            console.log(this.results)
+                        } else {
+                            alert('Tidak ada hasil yang dikembalikan oleh API.');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Gagal terhubung ke API.');
+                    } finally {
+                        this.loading = false; // Sembunyikan loader
+                    }
+                }
+            }))
+        </script>
+    @endscript
+
     <section class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
         <div class="card">
             <div class="p-6">
