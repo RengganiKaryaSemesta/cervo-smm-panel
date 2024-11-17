@@ -46,15 +46,7 @@ class Content extends Component
     #[On('offcanvascontrollerdismiss')]
     public function getData()
     {
-        return InstagramAccount::where(
-            'name',
-            'LIKE',
-            '%' . $this->pagination['search'] . '%'
-        )->orWhere(
-                'description',
-                'LIKE',
-                '%' . $this->pagination['search'] . '%'
-            )->latest()
+        return InstagramAccount::search($this->pagination['search'])->latest()
             ->paginate($this->pagination['limit'])->withQueryString();
     }
     public function delete($id)

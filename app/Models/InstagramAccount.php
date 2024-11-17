@@ -17,5 +17,15 @@ class InstagramAccount extends Model
         "cookie",
         "status",
     ];
-    //
+    public function scopeSearch($query,$keywords){
+        return $query->where(
+            'username',
+            'LIKE',
+            '%' . $keywords . '%'
+        )->orWhere(
+                'email',
+                'LIKE',
+                '%' . $keywords . '%'
+        );
+    }
 }
