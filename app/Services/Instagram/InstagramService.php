@@ -6,6 +6,7 @@ use App\Enums\InstagramServiceStatus;
 use App\Models\InstagramAccount;
 use App\Models\InstagramService as InstagramServiceModel;
 use App\Enums\InstagramServiceType;
+use App\Services\Instagram\Actions\CommentAction;
 use App\Services\Instagram\Actions\LikeAction;
 use Illuminate\Support\Facades\Http;
 use App\Enums\InstagramServiceItemStatus;
@@ -18,7 +19,6 @@ class InstagramService
     public function like(InstagramServiceModel $instagramServiceModel) : array
     {
         $accountCount      = $instagramServiceModel->account_count;
-        $url               = $instagramServiceModel->url;
         $availableAccounts = $this->getAvailableAccounts(
             $instagramServiceModel,
             $accountCount
@@ -52,10 +52,44 @@ class InstagramService
         );
         return $availableAccounts->toArray();
     }
-
-    static public function comment()
+    public function comment(InstagramServiceModel $instagramServiceModel, $comments = []) : array
     {
+        $accountCount      = $instagramServiceModel->account_count;
+        $availableAccounts = $this->getAvailableAccounts(
+            $instagramServiceModel,
+            $accountCount
+        );
+        // Simpan data akun yang melakukan like
+        $failed  = false;
+        $success = false;
+        foreach ($availableAccounts as $account) {
+            $action = new CommentAction(
+                $instagramServiceModel,
+                $account,
+                $comments
+            );
+            $result = $action->execute();
+            if ($result) {
+                $success = true;
+            }
+            else {
+                $failed = true;
+                break;
+            }
+        }
+        $instagramServiceModel->update(
+            [
+                'status'      => ($failed && $success)
+                    ? InstagramServiceStatus::PartialFailure->value
+                    : ($success
+                        ? InstagramServiceStatus::Completed->value
+                        : InstagramServiceStatus::Failed->value),
+                'finished_at' => now(),
+            ]
+        );
+        return $availableAccounts->toArray();
     }
+
     static public function follow()
     {
     }
