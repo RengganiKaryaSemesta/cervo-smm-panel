@@ -52,6 +52,14 @@ class InstagramService
         );
         return $availableAccounts->toArray();
     }
+
+    static public function comment()
+    {
+    }
+    static public function follow()
+    {
+    }
+
     public function getAvailableAccounts(InstagramServiceModel $instagramServiceModel, int $count) : \Illuminate\Support\Collection
     {
         $instagramServiceModels = InstagramServiceModel::where(
@@ -88,17 +96,11 @@ class InstagramService
                 [
                     'finished_at' => now(),
                     'status'      => InstagramServiceStatus::Failed->value,
-                    'error_msg'   => "Tidak cukup akun Instagram yang tersedia untuk melakukan like. Dibutuhkan {$count}, tetapi hanya tersedia {$availableAccounts->count()}.Tidak cukup akun Instagram yang tersedia untuk melakukan like. Dibutuhkan {$count}, tetapi hanya tersedia {$availableAccounts->count()}.",
+                    'error_msg'   => "Tidak cukup akun Instagram yang tersedia untuk melakukan proses. Kemungkinan sudah semua akun Instagram yang tersedia telah digunakan.",
                 ]
             );
-            return throw new \Exception("Tidak cukup akun Instagram yang tersedia untuk melakukan like. Dibutuhkan {$count}, tetapi hanya tersedia {$availableAccounts->count()}.");
+            return throw new \Exception("Tidak cukup akun Instagram yang tersedia untuk melakukan proses. Kemungkinan sudah semua akun Instagram yang tersedia telah digunakan.");
         }
         return $availableAccounts;
-    }
-    static public function comment()
-    {
-    }
-    static public function follow()
-    {
     }
 }
