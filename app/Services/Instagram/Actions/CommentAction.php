@@ -14,11 +14,14 @@ class CommentAction
         protected $instagramServiceModel;
         protected $commentUsed;
 
-        public function __construct(InstagramServiceModel $instagramServiceModel, InstagramAccount $instagramAccount,$comments = [])
+        public function __construct(InstagramServiceModel $instagramServiceModel, InstagramAccount $instagramAccount, $comments = [])
         {
                 $this->instagramServiceModel = $instagramServiceModel;
                 $this->instagramAccount      = $instagramAccount;
-                $this->commentUsed = $comments[rand(0,count($comments))];
+                $this->commentUsed           = $comments[rand(
+                        0,
+                        count($comments) - 1
+                )];
         }
         public function execute() : bool
         {
@@ -85,6 +88,17 @@ class CommentAction
                 $media           = $response->body();
                 $headers         = $response->headers();
                 $setCookieHeader = $headers['set-cookie'] ?? [];
+                if (isset($response->transferStats->getHandlerStats()['url'])) { {
+                                if (str_contains(
+                                        $response->transferStats->getHandlerStats()['url'],
+                                        '/accounts/suspended'
+                                )) { {
+                                                $this->instagramAccount->update(['status' => 0]);
+                                                return throw new \Exception("Akun terkena suspend");
+                                        }
+                                }
+                        }
+                }
                 preg_match(
                         '/instagram:\/\/media\?id=(.*?)" \/>/',
                         $media,
@@ -134,7 +148,7 @@ class CommentAction
                                 ]
                         );
                 if (! $response->successful()) {
-                        return throw new \Exception("Gagal melakukan comment");
+                        return throw new \Exception($response->body());
                 }
         }
 

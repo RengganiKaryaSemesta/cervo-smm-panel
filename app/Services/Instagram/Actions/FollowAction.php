@@ -8,7 +8,7 @@ use App\Enums\InstagramServiceStatus;
 use App\Enums\InstagramServiceItemStatus;
 use App\Models\InstagramService as InstagramServiceModel;
 
-class LikeAction
+class FollowAction
 {
         protected $instagramAccount;
         protected $instagramServiceModel;
@@ -23,7 +23,7 @@ class LikeAction
                 try {
                         $csrfToken = $this->extractCsrfToken();
                         $mediaId   = $this->getMediaId();
-                        $this->sendLikeRequest(
+                        $this->sendFollowRequest(
                                 $mediaId,
                                 $csrfToken
                         );
@@ -31,7 +31,7 @@ class LikeAction
                                 [
                                         'instagram_account_id' => $this->instagramAccount->id,
                                         'comment'              => null,
-                                        'type'                 => InstagramServiceType::Like->value,
+                                        'type'                 => InstagramServiceType::Follow->value,
                                         'status'               => InstagramServiceStatus::Completed->value,
                                 ]
                         );
@@ -42,7 +42,7 @@ class LikeAction
                                 [
                                         'instagram_account_id' => $this->instagramAccount->id,
                                         'comment'              => null,
-                                        'type'                 => InstagramServiceType::Like->value,
+                                        'type'                 => InstagramServiceType::Follow->value,
                                         'status'               => InstagramServiceStatus::Failed->value,
                                         'error_msg'            => $th->getMessage(),
                                 ]
@@ -95,23 +95,16 @@ class LikeAction
                         }
                 }
                 preg_match(
-                        '/instagram:\/\/media\?id=(.*?)" \/>/',
+                        '/"params":{"page_id":"profilePage_(.*?)","profile_id":"/',
                         $media,
                         $mediaId
                 );
                 if (! isset($mediaId[1])) {
-                        preg_match(
-                                '/"postPage_(.*?)",/',
-                                $media,
-                                $mediaId
-                        );
-                        if (! isset($mediaId[1])) {
-                                return throw new \Exception("Media ID tidak ditemukan.");
-                        }
+                        return throw new \Exception("Media ID tidak ditemukan.");
                 }
                 return $mediaId[1];
         }
-        public function sendLikeRequest($mediaId, $csrfToken, )
+        public function sendFollowRequest($mediaId, $csrfToken, )
         {
                 $response = Http::withHeaders(
                         [
@@ -135,7 +128,7 @@ class LikeAction
                                 '',
                                 'application/x-www-form-urlencoded'
                         )
-                        ->post("https://www.instagram.com/api/v1/web/likes/{$mediaId}/like/");
+                        ->post("https://www.instagram.com/api/v1/web/friendships/{$mediaId}/follow/");
                 if (! $response->successful()) {
                         return throw new \Exception($response->body());
                 }

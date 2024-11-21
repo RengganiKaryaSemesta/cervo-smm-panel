@@ -7,6 +7,7 @@ use App\Models\InstagramAccount;
 use App\Models\InstagramService as InstagramServiceModel;
 use App\Enums\InstagramServiceType;
 use App\Services\Instagram\Actions\CommentAction;
+use App\Services\Instagram\Actions\FollowAction;
 use App\Services\Instagram\Actions\LikeAction;
 use Illuminate\Support\Facades\Http;
 use App\Enums\InstagramServiceItemStatus;
@@ -37,7 +38,41 @@ class InstagramService
             }
             else {
                 $failed = true;
-                break;
+            }
+        }
+        $instagramServiceModel->update(
+            [
+                'status'      => ($failed && $success)
+                    ? InstagramServiceStatus::PartialFailure->value
+                    : ($success
+                        ? InstagramServiceStatus::Completed->value
+                        : InstagramServiceStatus::Failed->value),
+                'finished_at' => now(),
+            ]
+        );
+        return $availableAccounts->toArray();
+    }
+    public function follow(InstagramServiceModel $instagramServiceModel) : array
+    {
+        $accountCount      = $instagramServiceModel->account_count;
+        $availableAccounts = $this->getAvailableAccounts(
+            $instagramServiceModel,
+            $accountCount
+        );
+        // Simpan data akun yang melakukan like
+        $failed  = false;
+        $success = false;
+        foreach ($availableAccounts as $account) {
+            $action = new FollowAction(
+                $instagramServiceModel,
+                $account
+            );
+            $result     = $action->execute();
+            if ($result==1) {
+                $success = true;
+            }
+            else {
+                $failed = true;
             }
         }
         $instagramServiceModel->update(
@@ -71,7 +106,6 @@ class InstagramService
             }
             else {
                 $failed = true;
-                break;
             }
         }
         $instagramServiceModel->update(
@@ -86,11 +120,6 @@ class InstagramService
         );
         return $availableAccounts->toArray();
     }
-
-    static public function follow()
-    {
-    }
-
     public function getAvailableAccounts(InstagramServiceModel $instagramServiceModel, int $count) : \Illuminate\Support\Collection
     {
         $instagramServiceModels = InstagramServiceModel::where(

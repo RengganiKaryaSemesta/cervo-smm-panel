@@ -36,5 +36,10 @@ class InstagramServiceJob implements ShouldQueue
                 $this->comments
             );
         }
+        if ($this->instagramService->type == InstagramServiceType::Follow) {
+            $instagramServiceProcess->follow(
+                $this->instagramService
+            );
+        }
     }
 }
