@@ -54,7 +54,7 @@ class Like extends Component
                 ->performedOn($data)
                 ->withProperties($this->form)
                 ->log("Create Instagram Account");
-        
+            $this->reset();
         }
         catch (\Throwable $th) {
             $this->dispatch(
