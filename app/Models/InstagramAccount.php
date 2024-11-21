@@ -28,4 +28,7 @@ class InstagramAccount extends Model
                 '%' . $keywords . '%'
         );
     }
+    public function instagramServiceItems(){
+        return $this->hasMany(InstagramServiceItem::class,'instagram_account_id');
+    }
 }
