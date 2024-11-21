@@ -1,119 +1,18 @@
 <main>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        <x-widget-statistic color="success" title="Total Stok" increase_from_last_month_in_percent="12" total="100" />
-        <x-widget-statistic color="warning" title="Total Stok Masuk" total="425" progressbar="40"
-            increase_from_last_month_in_percent="40" />
-        <x-widget-statistic color="danger" title="Total Stok Keluar" total="532" progressbar="80"
-            increase_from_last_month_in_percent="80" />
-        <x-widget-progressbars title="Stok Terkini per Gudang" :items="$latest_stock" />
+        <x-widget-statistic color="warning" title="Total Like Success" total="{{ $total_like->Completed }}" progressbar="0"
+            increase_from_last_month_in_percent="0" />
+        <x-widget-statistic color="danger" title="Total Like Failed" total="{{ $total_like->Failed }}" progressbar="0"
+            increase_from_last_month_in_percent="0" />
+        {{-- <x-widget-progressbars title="Stok Terkini per Gudang" :items="$latest_stock" />
         <div class="card md:col-span-2">
             <div class="p-6">
                 <h3 class="card-title">Grafik Tren Stok</h3>
                 <canvas id="lineChart"></canvas>
             </div>
-        </div>
+        </div> --}}
     </div>
-    <div x-data="geminiApi" class="p-5">
-        <!-- Input Prompt -->
-        <textarea x-model="prompt" placeholder="Masukkan prompt Anda..." class="w-full p-2 border rounded"></textarea>
-
-        <!-- Tombol Kirim -->
-        <button @click="generateContent" class="px-4 py-2 mt-2 text-white bg-blue-500 rounded">
-            Generate
-        </button>
-
-        <!-- Loader -->
-        <div x-show="loading" class="mt-2">Loading...</div>
-
-        <!-- Tampilkan Hasil -->
-        <div x-show="results.length > 0" class="mt-4">
-            <h3 class="font-bold">Hasil:</h3>
-            <ul>
-                <template x-for="result in results" :key="result">
-                    <li x-text="result" class="mt-2"></li>
-                </template>
-            </ul>
-        </div>
-    </div>
-    @script
-        <script>
-            Alpine.data('geminiApi', () => ({
-                prompt: '', // Input prompt dari user
-                results: ["Rizzal ganteng banget!", "Mas Rizzal tampan! 😍"], // Hasil dari API
-                loading: false, // Status loading
-
-                async generateContent() {
-                    // Validasi input
-                    if (!this.prompt) {
-                        alert('Prompt tidak boleh kosong!');
-                        return;
-                    }
-
-                    this.loading = true; // Tampilkan loader
-                    this.results = []; // Reset hasil
-
-                    try {
-                        // Panggil API Google Gemini
-                        const response = await fetch(
-                            'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyD0aCshDk4hBeZtuqd4nGonofJ7qSkBWQ8', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({
-                                    contents: [{
-                                        parts: [{
-                                            text: `Buatkan saya 2 kalimat komentar post instagram dengan kategori ini (${this.prompt}), dan pastikan returnnya adalah json dengan schema comments:, maksimal 50 karakter.`
-                                        }],
-                                    }],
-                                    generationConfig: {
-                                        response_mime_type: "application/json",
-                                        response_schema: {
-                                            "type": "object",
-                                            "properties": {
-                                                "comments": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "string"
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }),
-                            }
-                        );
-
-                        const data = await response.json();
-                        if (data.candidates && data.candidates.length > 0) {
-                            // Ambil teks dari "candidates[0].content.parts[0].text"
-                            const rawText = data.candidates[0].content.parts[0].text;
-                            // Bersihkan teks dari wrapping markdown jika ada
-                            const cleanedText = rawText
-                                .trim() // Hapus spasi atau baris kosong di awal/akhir
-                                .replace(/^```json\n/, '') // Hapus ` ```json\n ` di awal
-                                .replace(/```$/, ''); // Hapus ` ``` ` di akhir // Hapus ``` di akhir
-
-
-                            // // Parse teks menjadi JSON
-                            const parsedResults = JSON.parse(cleanedText);
-                            // Simpan hasil ke dalam this.results
-                            this.results = parsedResults.comments;
-                            console.log(this.results)
-                        } else {
-                            alert('Tidak ada hasil yang dikembalikan oleh API.');
-                        }
-                    } catch (error) {
-                        console.error('Error:', error);
-                        alert('Gagal terhubung ke API.');
-                    } finally {
-                        this.loading = false; // Sembunyikan loader
-                    }
-                }
-            }))
-        </script>
-    @endscript
-
+    {{-- 
     <section class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
         <div class="card">
             <div class="p-6">
@@ -455,5 +354,5 @@
                 }
             });
         </script>
-    @endscript
+    @endscript --}}
 </main>

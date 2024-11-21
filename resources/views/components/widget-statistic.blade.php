@@ -9,7 +9,7 @@
     <div class="p-6">
         <div class="flex items-center justify-between mb-6">
             <h4 class="card-title">{{ $title }}</h4>
-            <div>
+            {{-- <div>
                 <button data-fc-target="dropdown-{{str()->slug($title)}}" data-fc-type="dropdown" type="button"
                     data-fc-placement="bottom-end">
                     <i class="mdi mdi-dots-vertical text-xl"></i>
@@ -22,7 +22,7 @@
                         Lihat Detail
                     </a>
                 </div>
-            </div>
+            </div> --}}
         </div>
 
         <div class="flex items-center justify-between">
