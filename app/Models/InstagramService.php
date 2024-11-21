@@ -29,6 +29,7 @@ class InstagramService extends Model
         'status', // Status layanan (misal: aktif, tidak aktif)
         'started_at', // Waktu mulai layanan
         'finished_at', // Waktu selesai layanan
+        "error_msg",
     ];
 
     /**

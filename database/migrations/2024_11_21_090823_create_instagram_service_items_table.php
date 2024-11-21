@@ -36,6 +36,7 @@ return new class extends Migration {
                 $table->timestamps();
                 $table->softDeletes();
                 $table->auditable();
+                $table->longText('error_msg')->nullable();
                 // relasi dan indexing
                 $table->foreign('instagram_account_id')->references('id')->on('instagram_accounts')->restrictOnDelete();
                 $table->foreign('instagram_service_id')->references('id')->on('instagram_services')->cascadeOnDelete();

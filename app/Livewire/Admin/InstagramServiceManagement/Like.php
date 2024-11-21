@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\InstagramServiceManagement;
 
 use App\Enums\InstagramServiceStatus;
 use App\Enums\InstagramServiceType;
+use App\Jobs\InstagramServiceJob;
 use App\Models\InstagramAccount;
 use App\Models\InstagramService;
 use Livewire\Component;
@@ -41,6 +42,8 @@ class Like extends Component
             $data->started_at  = now();
             $data->finished_at = now();
             $data->saveOrFail();
+            \DB::commit();
+            InstagramServiceJob::dispatch($data);
             $this->dispatch("offcanvascontrollerdismiss");
             $this->dispatch(
                 "swal:success",
@@ -51,7 +54,7 @@ class Like extends Component
                 ->performedOn($data)
                 ->withProperties($this->form)
                 ->log("Create Instagram Account");
-            \DB::commit();
+        
         }
         catch (\Throwable $th) {
             $this->dispatch(

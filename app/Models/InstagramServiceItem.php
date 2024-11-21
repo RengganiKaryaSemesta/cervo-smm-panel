@@ -17,6 +17,7 @@ class InstagramServiceItem extends Model
         'comment',
         'type',
         'status',
+        "error_msg",
     ];
     protected function casts() : array
     {

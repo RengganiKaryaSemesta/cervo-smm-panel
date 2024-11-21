@@ -34,6 +34,7 @@ return new class extends Migration {
                 );
                 $table->timestamp('started_at');
                 $table->timestamp('finished_at');
+                $table->longText('error_msg')->nullable();
                 $table->timestamps();
                 $table->softDeletes();
                 $table->auditable();

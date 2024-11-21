@@ -4,7 +4,7 @@
         <article x-data="form" >
             <div class="mb-4">
                 <label class="block text-gray-600 mb-2 uppercase" for="url">URL</label>
-                <input type="text" class="form-input w-full" id="url" wire:model="form.url">
+                <input type="text" class="form-input w-full" id="url" wire:model="form.url" placeholder="https://www.instagram.com/p/CwZyRTzvHj1">
             </div>
             <div class="mb-4">
             <label class="block text-gray-600 mb-2 uppercase" for="account_count">Number of Account</label>
