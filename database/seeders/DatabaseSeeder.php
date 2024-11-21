@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             SuperAdminUserSeeder::class,
             IndoRegionSeeder::class,
-            InstagramAccountSeeder::class
+            InstagramAccountSeeder::class,
+            InstagramServiceSeeder::class
         ]);
     }
 }
