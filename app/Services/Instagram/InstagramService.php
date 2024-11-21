@@ -54,11 +54,8 @@ class InstagramService
     }
     public function comment(InstagramServiceModel $instagramServiceModel, $comments = []) : array
     {
-        $accountCount      = $instagramServiceModel->account_count;
-        $availableAccounts = $this->getAvailableAccounts(
-            $instagramServiceModel,
-            $accountCount
-        );
+        $availableAccounts =  InstagramAccount::limit($instagramServiceModel->account_count)
+            ->get();
         // Simpan data akun yang melakukan like
         $failed  = false;
         $success = false;

@@ -12,11 +12,13 @@ class CommentAction
 {
         protected $instagramAccount;
         protected $instagramServiceModel;
+        protected $commentUsed;
 
-        public function __construct(InstagramServiceModel $instagramServiceModel, InstagramAccount $instagramAccount,public $comments = [])
+        public function __construct(InstagramServiceModel $instagramServiceModel, InstagramAccount $instagramAccount,$comments = [])
         {
                 $this->instagramServiceModel = $instagramServiceModel;
                 $this->instagramAccount      = $instagramAccount;
+                $this->commentUsed = $comments[rand(0,count($comments))];
         }
         public function execute() : bool
         {
@@ -30,7 +32,7 @@ class CommentAction
                         $this->instagramServiceModel->instagramServiceItems()->create(
                                 [
                                         'instagram_account_id' => $this->instagramAccount->id,
-                                        'comment'              => null,
+                                        'comment'              => $this->commentUsed,
                                         'type'                 => InstagramServiceType::Comment->value,
                                         'status'               => InstagramServiceStatus::Completed->value,
                                 ]
@@ -41,7 +43,7 @@ class CommentAction
                         $this->instagramServiceModel->instagramServiceItems()->create(
                                 [
                                         'instagram_account_id' => $this->instagramAccount->id,
-                                        'comment'              => null,
+                                        'comment'              => $this->commentUsed,
                                         'type'                 => InstagramServiceType::Comment->value,
                                         'status'               => InstagramServiceStatus::Failed->value,
                                         'error_msg'            => $th->getMessage(),
@@ -128,7 +130,7 @@ class CommentAction
                         ->post(
                                 "https://www.instagram.com/api/v1/web/comments/{$mediaId}/add/",
                                 [
-                                        'comment_text' => 'Good',
+                                        'comment_text' => $this->commentUsed,
                                 ]
                         );
                 if (! $response->successful()) {
