@@ -18,7 +18,7 @@ class LikeAction
                 $this->instagramServiceModel = $instagramServiceModel;
                 $this->instagramAccount      = $instagramAccount;
         }
-        public function execute()
+        public function execute(): bool
         {
                 try {
                         $csrfToken = $this->extractCsrfToken();
