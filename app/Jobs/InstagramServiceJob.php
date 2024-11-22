@@ -2,11 +2,13 @@
 
 namespace App\Jobs;
 
-use App\Enums\InstagramServiceType;
 use App\Models\InstagramService;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Queue\Queueable;
+use App\Enums\InstagramServiceType;
+use App\Notifications\TaskAssigned;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Notification;
 
 class InstagramServiceJob implements ShouldQueue
 {
@@ -41,5 +43,6 @@ class InstagramServiceJob implements ShouldQueue
                 $this->instagramService
             );
         }
+       Notification::sendNow($this->instagramService->creator, new TaskAssigned(['title' => 'Process Completed', 'detail' => 'Please check your report at Instagram Report -> '.$this->instagramService->type->value]));
     }
 }
