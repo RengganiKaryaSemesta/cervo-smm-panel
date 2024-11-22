@@ -29,8 +29,8 @@ class AppServiceProvider extends ServiceProvider
         Blueprint::macro(
             'code',
             function () {
-                $this->unsignedBigInteger('counter_code')->unique();
-                $this->unsignedBigInteger('code')->unique();
+                $this->integer('counter_code')->unique();
+                $this->string('code')->unique();
             }
         );
         Blueprint::macro(

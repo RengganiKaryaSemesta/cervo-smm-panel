@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Models\Concern\Auditable;
 use App\Enums\InstagramServiceType;
 use App\Models\Concern\CounterCode;
@@ -46,8 +47,54 @@ class InstagramService extends Model
             'type'        => InstagramServiceType::class,
         ];
     }
+    public function scopeSearch($query,$keywords){
+        return $query->when($keywords!=null,function($query)use($keywords){
+            return $query->where(function($query)use($keywords){
+                return $query->where(
+                    'url',
+                    'LIKE',
+                    '%' . $keywords . '%'
+                )->orWhere(
+                        'error_msg',
+                        'LIKE',
+                        '%' . $keywords . '%'
+                );
+            });
+        });
+    }
+    public function scopeFilterRange($query, array $filters)
+    {
+        $startDate = Carbon::parse($filters['startDate'])->startOfDay()->format('Y-m-d H:i');
+        $endDate   = Carbon::parse($filters['endDate'])->endOfDay()->format('Y-m-d H:i');
+        return $query->where(
+            function ($query) use ($startDate, $endDate) {
+                return $query->when(
+                    $startDate && $endDate,
+                    function ($query) use ($startDate, $endDate) {
+                        return $query->whereBetween(
+                            'started_at',
+                            [
+                                $startDate,
+                                $endDate,
+                            ]
+                        )
+                            ->orWhereBetween(
+                                'finished_at',
+                                [
+                                    $startDate,
+                                    $endDate,
+                                ]
+                            );
+                    }
+                );
+            }
+        );
+    }
     public function instagramServiceItems()
     {
-        return $this->hasMany(InstagramServiceItem::class, 'instagram_service_id');
+        return $this->hasMany(
+            InstagramServiceItem::class,
+            'instagram_service_id'
+        );
     }
 }
