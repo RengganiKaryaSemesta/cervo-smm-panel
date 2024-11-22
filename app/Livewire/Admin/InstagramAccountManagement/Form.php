@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Admin\InstagramAccountManagement;
+namespace App\Livewire\Admin\InstagramAccountManagement;
 
 use Livewire\Component;
 
