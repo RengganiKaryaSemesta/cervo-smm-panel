@@ -33,8 +33,6 @@ class Like extends Component
     #[On('offcanvascontrollerdismiss')]
     public function getData()
     {
-      
-
         return InstagramService::orderBy(
             'counter_code',
             'DESC'
