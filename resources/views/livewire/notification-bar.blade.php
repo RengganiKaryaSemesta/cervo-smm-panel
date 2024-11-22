@@ -8,6 +8,7 @@
                 <i data-lucide="bell"></i>
             @endpersist
             <span x-ref="total_notification"
+            wire:poll.15s="handleRefreshData"
                 class="absolute top-3 end-1.5 w-4 h-4 flex items-center justify-center rounded-full bg-danger text-white  font-medium text-[10px]">{{ $unread_data->count() }}</span>
         </span>
     </button>
