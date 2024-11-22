@@ -32,6 +32,6 @@ class Detail extends Component
                 'isComment'=>$this->instagramService->type == InstagramServiceType::Comment,
                 'type' => strtolower($this->instagramService->type->value)
             ]
-        )->title('Intagram Report - Detail')->layout('layouts.admin.app');
+        )->title('Intagram Report - Detail '. $this->instagramService->type->value)->layout('layouts.admin.app');
     }
 }
