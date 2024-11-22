@@ -1,8 +1,12 @@
 <main>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         <x-widget-statistic color="warning" title="Total Like Success" total="{{ $total_like->Completed }}" progressbar="0"
             increase_from_last_month_in_percent="0" />
         <x-widget-statistic color="danger" title="Total Like Failed" total="{{ $total_like->Failed }}" progressbar="0"
+            increase_from_last_month_in_percent="0" />
+            <x-widget-statistic color="success" title="Total Comments" total="{{ $total_coment }}" progressbar="0"
+            increase_from_last_month_in_percent="0" />
+            <x-widget-statistic color="primary" title="Total Followers" total="{{ $total_follow }}" progressbar="0"
             increase_from_last_month_in_percent="0" />
         {{-- <x-widget-progressbars title="Stok Terkini per Gudang" :items="$latest_stock" />
         <div class="card md:col-span-2">
