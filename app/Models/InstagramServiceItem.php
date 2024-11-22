@@ -26,6 +26,17 @@ class InstagramServiceItem extends Model
             'type'   => InstagramServiceType::class,
         ];
     }
+    public function scopeSearch($query,$keywords){
+        return $query->when($keywords!=null,function($query)use($keywords){
+            return $query->where(function($query)use($keywords){
+                return $query->wher(
+                        'error_msg',
+                        'LIKE',
+                        '%' . $keywords . '%'
+                );
+            });
+        });
+    }
     public function instagramService()
     {
         return $this->belongsTo(InstagramService::class, 'instagram_service_id');

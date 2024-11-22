@@ -5,7 +5,7 @@
                 <div class="flex justify-between flex-col gap-2 md:flex-row items-center">
                     <div>
                     </div>
-                    <x-our-table-input-search x_model="filters.search"/>
+                    <x-our-table-input-search x_model="filters.search" />
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
@@ -44,9 +44,10 @@
                                 </x-badge-status>
                             </x-our-table-td>
                             <x-our-table-td class="text-center text-primary w-10">
-                                <button x-on:click="archive({{ $item->id }})">
+                                <a
+                                    href="{{ route('admin.reports.instagrams.detail', ['instagramService' => $item->id]) }}">
                                     <i class="mdi mdi-eye"></i>
-                                </button>
+                                </a>
                             </x-our-table-td>
                         </tr>
                     @empty

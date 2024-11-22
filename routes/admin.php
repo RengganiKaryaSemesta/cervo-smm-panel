@@ -69,6 +69,10 @@ Route::middleware('auth')->group(
                             '/follow',
                             \App\Livewire\Admin\InstagramServiceReportManagement\Follow::class
                         )->name('follow');
+                        Route::get(
+                            '/detail/{instagramService}',
+                            \App\Livewire\Admin\InstagramServiceReportManagement\Detail::class
+                        )->name('detail');
                     }
                 )->middleware(['can:read instagram services management']);
             }
