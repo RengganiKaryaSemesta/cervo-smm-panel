@@ -1,5 +1,5 @@
     <div class="relative bg-cover bg-center"
-        style="background-image: url({{ asset('vendor/assets/images/bg-auth-2.jpg') }})">
+        style="background-image: url({{ asset('vendor/assets/images/bg-pattern.png') }})">
         <div class="absolute inset-0 dark:bg-black/80"></div>
         <div class="relative flex flex-col items-center justify-start py-20 h-screen">
             <div class="flex justify-center pt-10">

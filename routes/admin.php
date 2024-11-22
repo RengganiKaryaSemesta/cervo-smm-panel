@@ -53,5 +53,25 @@ Route::middleware('auth')->group(
                 )->middleware(['can:create instagram services management']);
             }
         );
+        Route::prefix('/reports')->as('reports.')->group(
+            function () {
+                Route::prefix('/instagrams')->as('instagrams.')->group(
+                    function () {
+                        Route::get(
+                            '/like',
+                            \App\Livewire\Admin\InstagramServiceReportManagement\Like::class
+                        )->name('like');
+                        Route::get(
+                            '/comment',
+                            \App\Livewire\Admin\InstagramServiceReportManagement\Comment::class
+                        )->name('comment');
+                        Route::get(
+                            '/follow',
+                            \App\Livewire\Admin\InstagramServiceReportManagement\Follow::class
+                        )->name('follow');
+                    }
+                )->middleware(['can:read instagram services management']);
+            }
+        );
     }
 );

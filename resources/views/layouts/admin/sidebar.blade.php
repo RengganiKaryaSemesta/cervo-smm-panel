@@ -53,31 +53,54 @@
                          ])
                      @endif
                  @endif
-                 @can("create instagram services management")
-                 <li class="menu-title">Services</li>
-                 @include('layouts.admin.components.side-link-multiple', [
-                    'icon' => 'mdi mdi-instagram',
-                    'label' => 'Instagram Service',
-                    'childrens' => [
-                        [
-                            'label' => 'Like',
-                            'route' => 'admin.services.instagrams.like', // String biasa
-                            'permissions' => 'create instagram services management',
-                        ],
-                        [
-                            'label' => 'Comment',
-                            'route' => 'admin.services.instagrams.comment', // String biasa
-                            'permissions' => 'create instagram services management',
-                        ],
-                        [
-                            'label' => 'Follow',
-                            'route' => 'admin.services.instagrams.follow', // String biasa
-                            'permissions' => 'create instagram services management',
-                        ],
-                    ],
-                ])
+                 @can('create instagram services management')
+                     <li class="menu-title">Services</li>
+                     @include('layouts.admin.components.side-link-multiple', [
+                         'icon' => 'mdi mdi-instagram',
+                         'label' => 'Instagram Service',
+                         'childrens' => [
+                             [
+                                 'label' => 'Like',
+                                 'route' => 'admin.services.instagrams.like', // String biasa
+                                 'permissions' => 'create instagram services management',
+                             ],
+                             [
+                                 'label' => 'Comment',
+                                 'route' => 'admin.services.instagrams.comment', // String biasa
+                                 'permissions' => 'create instagram services management',
+                             ],
+                             [
+                                 'label' => 'Follow',
+                                 'route' => 'admin.services.instagrams.follow', // String biasa
+                                 'permissions' => 'create instagram services management',
+                             ],
+                         ],
+                     ])
                  @endcan
                  <li class="menu-title">Report</li>
+                 @can('read instagram services management')
+                 @include('layouts.admin.components.side-link-multiple', [
+                     'icon' => 'mdi mdi-instagram',
+                     'label' => 'Instagram Report',
+                     'childrens' => [
+                         [
+                             'label' => 'Like',
+                             'route' => 'admin.reports.instagrams.like', // String biasa
+                             'permissions' => 'read instagram services management',
+                         ],
+                         [
+                             'label' => 'Comment',
+                             'route' => 'admin.reports.instagrams.comment', // String biasa
+                             'permissions' => 'read instagram services management',
+                         ],
+                         [
+                             'label' => 'Follow',
+                             'route' => 'admin.reports.instagrams.follow', // String biasa
+                             'permissions' => 'read instagram services management',
+                         ],
+                     ],
+                 ])
+             @endcan
                  @can('read log activities management')
                      @include('layouts.admin.components.side-link', [
                          'icon' => 'mdi mdi-history',
