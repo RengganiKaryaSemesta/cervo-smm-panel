@@ -53,7 +53,7 @@ class Follow extends Component
                 ->causedBy(auth()->user())
                 ->performedOn($data)
                 ->withProperties($this->form)
-                ->log("Create Instagram Service - Follow");
+                ->log("Membuat Layanan Instagram - Follow Berhasil");
             $this->reset();
         }
         catch (\Throwable $th) {

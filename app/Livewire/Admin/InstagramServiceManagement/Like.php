@@ -49,11 +49,11 @@ class Like extends Component
                 "swal:success",
                 message: "The process is in progress, please check periodically in the report"
             )->self();
-            activity("Instagram Account")
+            activity("Instagram Service")
                 ->causedBy(auth()->user())
                 ->performedOn($data)
                 ->withProperties($this->form)
-                ->log("Create Instagram Account");
+                ->log("Use Instagram Like Service");
             $this->reset();
         }
         catch (\Throwable $th) {
