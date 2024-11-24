@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\InstagramServiceItemStatus;
 use App\Enums\InstagramServiceType;
 use App\Models\Concern\Auditable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -26,20 +27,35 @@ class InstagramServiceItem extends Model
             'type'   => InstagramServiceType::class,
         ];
     }
-    public function scopeSearch($query,$keywords){
-        return $query->when($keywords!=null,function($query)use($keywords){
-            return $query->where(function($query)use($keywords){
+    public function scopeSearch($query, $keywords)
+    {
+        return $query->when(
+            $keywords != null,
+            function (Builder $query) use ($keywords) {
                 return $query->where(
-                        'error_msg',
-                        'LIKE',
-                        '%' . $keywords . '%'
+                    function ($query) use ($keywords) {
+                        return $query->where(
+                            'error_msg',
+                            'LIKE',
+                            '%' . $keywords . '%'
+                        )->orWhereHas('instagramAccount',function($query)use($keywords){
+                            return $query->where('name',
+                            'LIKE',
+                            '%' . $keywords . '%');
+                        })->orWhere('email',
+                            'LIKE',
+                            '%' . $keywords . '%');
+                    }
                 );
-            });
-        });
+            }
+        );
     }
     public function instagramService()
     {
-        return $this->belongsTo(InstagramService::class, 'instagram_service_id');
+        return $this->belongsTo(
+            InstagramService::class,
+            'instagram_service_id'
+        );
     }
 
     public function instagramAccount()
