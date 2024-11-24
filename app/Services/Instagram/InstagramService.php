@@ -122,6 +122,7 @@ class InstagramService
     }
     public function getAvailableAccounts(InstagramServiceModel $instagramServiceModel, int $count) : \Illuminate\Support\Collection
     {
+        dd($instagramServiceModel->type);
         $instagramServiceModels = InstagramServiceModel::where(
             'url',
             $instagramServiceModel->url
