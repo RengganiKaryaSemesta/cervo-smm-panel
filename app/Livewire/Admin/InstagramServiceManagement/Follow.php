@@ -43,12 +43,7 @@ class Follow extends Component
             $data->finished_at = now();
             $data->saveOrFail();
             \DB::commit();
-            // InstagramServiceJob::dispatch($data);
-            $instagramServiceProcess = new \App\Services\Instagram\InstagramService;
-            $instagramServiceProcess->follow(
-                $data
-            );
-            dd($instagramServiceProcess);
+            InstagramServiceJob::dispatch($data);
             $this->dispatch("offcanvascontrollerdismiss");
             $this->dispatch(
                 "swal:success",

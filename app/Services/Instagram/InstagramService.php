@@ -67,8 +67,8 @@ class InstagramService
                 $instagramServiceModel,
                 $account
             );
-            $result     = $action->execute();
-            if ($result==1) {
+            $result = $action->execute();
+            if ($result) {
                 $success = true;
             }
             else {
@@ -89,7 +89,7 @@ class InstagramService
     }
     public function comment(InstagramServiceModel $instagramServiceModel, $comments = []) : array
     {
-        $availableAccounts =  InstagramAccount::limit($instagramServiceModel->account_count)
+        $availableAccounts = InstagramAccount::limit($instagramServiceModel->account_count)
             ->get();
         // Simpan data akun yang melakukan like
         $failed  = false;
@@ -122,7 +122,7 @@ class InstagramService
     }
     public function getAvailableAccounts(InstagramServiceModel $instagramServiceModel, int $count) : \Illuminate\Support\Collection
     {
-      
+
         $instagramServiceModels = InstagramServiceModel::where(
             'url',
             $instagramServiceModel->url
@@ -132,8 +132,8 @@ class InstagramService
                 $instagramServiceModel->type
             )
             ->get();
-            
-        $usedAccountIds         = $instagramServiceModels->flatMap(
+
+        $usedAccountIds = $instagramServiceModels->flatMap(
             function ($service) {
                 return $service->instagramServiceItems()->where(
                     'status',
@@ -141,8 +141,8 @@ class InstagramService
                 )->pluck('instagram_account_id');
             }
         )->unique()->toArray();
- 
-        $availableAccounts      = InstagramAccount::whereNotIn(
+
+        $availableAccounts = InstagramAccount::whereNotIn(
             'id',
             $usedAccountIds
         )
@@ -152,7 +152,6 @@ class InstagramService
             )
             ->take($count)
             ->get();
-            dd($availableAccounts->pluck('id'));
         // Periksa apakah jumlah akun yang tersedia mencukupi
         if ($availableAccounts->count() === 0) {
             $instagramServiceModel->update(

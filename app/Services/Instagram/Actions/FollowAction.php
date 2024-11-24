@@ -22,11 +22,11 @@ class FollowAction
         {
                 try {
                         $csrfToken = $this->extractCsrfToken();
-                        $mediaId   = $this->getMediaId();
-                        $this->sendFollowRequest(
-                                $mediaId,
-                                $csrfToken
-                        );
+                        // $mediaId   = $this->getMediaId();
+                        // $this->sendFollowRequest(
+                        //         $mediaId,
+                        //         $csrfToken
+                        // );
                         $this->instagramServiceModel->instagramServiceItems()->create(
                                 [
                                         'instagram_account_id' => $this->instagramAccount->id,
