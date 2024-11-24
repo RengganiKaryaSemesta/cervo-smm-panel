@@ -47,7 +47,7 @@ class Follow extends Component
             $instagramServiceProcess = new \App\Services\Instagram\InstagramService;
             $instagramServiceProcess->comment(
                 $data,
-                []
+                ['ss']
             );
             dd($instagramServiceProcess);
             $this->dispatch("offcanvascontrollerdismiss");
