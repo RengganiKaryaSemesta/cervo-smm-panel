@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin;
 
 use App\Enums\InstagramServiceType;
+use App\Models\InstagramAccount;
 use App\Models\InstagramServiceItem;
 use Carbon\Carbon;
 use Livewire\Component;
@@ -30,6 +31,10 @@ class Dashboard extends Component
                 'SUM(CASE WHEN status = "Completed" AND type = ? THEN 1 ELSE 0 END) as Completed, 
                  SUM(CASE WHEN status = "Failed" AND type = ? THEN 1 ELSE 0 END) as Failed',
                 [InstagramServiceType::Follow->value, InstagramServiceType::Follow->value]
+            )->first(),
+            'total_accounts' => InstagramAccount::selectRaw(
+                'SUM(CASE WHEN status = true THEN 1 ELSE 0 END) as Active, 
+                 SUM(CASE WHEN status = false THEN 1 ELSE 0 END) as Inactive'
             )->first(),
         ])->title('Dashboard')->layout('layouts.admin.app');
     }

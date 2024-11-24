@@ -1,17 +1,21 @@
 <main>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5">
-        <x-widget-statistic color="warning" title="Total Like Success" total="{{ $total_like->Completed }}" progressbar="0"
+        <x-widget-statistic color="info" title="Total Account Active" total="{{ $total_accounts->Active  }}" progressbar="0"
             increase_from_last_month_in_percent="0" />
+        <x-widget-statistic color="danger" title="Total Account Inactive" total="{{ $total_accounts->Inactive }}" progressbar="0"
+            increase_from_last_month_in_percent="0" />
+        <x-widget-statistic color="warning" title="Total Like Success" total="{{ $total_like->Completed }}"
+            progressbar="0" increase_from_last_month_in_percent="0" />
         <x-widget-statistic color="danger" title="Total Like Failed" total="{{ $total_like->Failed }}" progressbar="0"
             increase_from_last_month_in_percent="0" />
-            <x-widget-statistic color="success" title="Total Comments Success" total="{{ $total_coment->Completed  }}" progressbar="0"
-            increase_from_last_month_in_percent="0" />
-             <x-widget-statistic color="danger" title="Total Comments Failed" total="{{ $total_coment->Failed }}" progressbar="0"
-            increase_from_last_month_in_percent="0" />
-            <x-widget-statistic color="primary" title="Total Following Success" total="{{ $total_follow->Completed  }}" progressbar="0"
-            increase_from_last_month_in_percent="0" />
-             <x-widget-statistic color="danger" title="Total Following Failed" total="{{ $total_follow->Failed  }}" progressbar="0"
-            increase_from_last_month_in_percent="0" />
+        <x-widget-statistic color="success" title="Total Comments Success" total="{{ $total_coment->Completed }}"
+            progressbar="0" increase_from_last_month_in_percent="0" />
+        <x-widget-statistic color="danger" title="Total Comments Failed" total="{{ $total_coment->Failed }}"
+            progressbar="0" increase_from_last_month_in_percent="0" />
+        <x-widget-statistic color="primary" title="Total Following Success" total="{{ $total_follow->Completed }}"
+            progressbar="0" increase_from_last_month_in_percent="0" />
+        <x-widget-statistic color="danger" title="Total Following Failed" total="{{ $total_follow->Failed }}"
+            progressbar="0" increase_from_last_month_in_percent="0" />
         {{-- <x-widget-progressbars title="Stok Terkini per Gudang" :items="$latest_stock" />
         <div class="card md:col-span-2">
             <div class="p-6">
