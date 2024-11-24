@@ -141,7 +141,7 @@ class InstagramService
                 )->pluck('instagram_account_id');
             }
         )->unique()->toArray();
-        dd($usedAccountIds);
+ 
         $availableAccounts      = InstagramAccount::whereNotIn(
             'id',
             $usedAccountIds
@@ -152,7 +152,7 @@ class InstagramService
             )
             ->take($count)
             ->get();
-
+            dd($availableAccounts);
         // Periksa apakah jumlah akun yang tersedia mencukupi
         if ($availableAccounts->count() === 0) {
             $instagramServiceModel->update(
