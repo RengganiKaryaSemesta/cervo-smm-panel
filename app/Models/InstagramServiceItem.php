@@ -39,12 +39,9 @@ class InstagramServiceItem extends Model
                             'LIKE',
                             '%' . $keywords . '%'
                         )->orWhereHas('instagramAccount',function($query)use($keywords){
-                            return $query->where('name',
+                            return $query->where('email',
                             'LIKE',
-                            '%' . $keywords . '%');
-                        })->orWhere('email',
-                            'LIKE',
-                            '%' . $keywords . '%');
+                            '%' . $keywords . '%');});
                     }
                 );
             }
