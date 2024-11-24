@@ -152,7 +152,7 @@ class InstagramService
             )
             ->take($count)
             ->get();
-            dd($availableAccounts);
+            dd($availableAccounts->pluck('id'));
         // Periksa apakah jumlah akun yang tersedia mencukupi
         if ($availableAccounts->count() === 0) {
             $instagramServiceModel->update(
