@@ -129,7 +129,7 @@ class InstagramService
         )
             ->where(
                 'type',
-                $instagramServiceModel->type->value
+                $instagramServiceModel->type
             )
             ->get();
             
