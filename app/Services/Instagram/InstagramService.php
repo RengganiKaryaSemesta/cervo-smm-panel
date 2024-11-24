@@ -132,7 +132,7 @@ class InstagramService
                 $instagramServiceModel->type->value
             )
             ->get();
-            dd($instagramServiceModels->type);
+            
         $usedAccountIds         = $instagramServiceModels->flatMap(
             function ($service) {
                 return $service->instagramServiceItems()->where(
@@ -141,6 +141,7 @@ class InstagramService
                 )->pluck('instagram_account_id');
             }
         )->unique()->toArray();
+        dd($usedAccountIds);
         $availableAccounts      = InstagramAccount::whereNotIn(
             'id',
             $usedAccountIds
