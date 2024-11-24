@@ -18,9 +18,19 @@ class Dashboard extends Component
     public function render()
     {
         return view('livewire.admin.dashboard', [
-            'total_like' => InstagramServiceItem::selectRaw('SUM(CASE WHEN status = "Completed" THEN 1 ELSE 0 END) as Completed, SUM(CASE WHEN status = "Failed" THEN 1 ELSE 0 END) as Failed')->first(),
-            'total_coment' => InstagramServiceItem::whereNotNull('comment')->count(),
-            'total_follow' => InstagramServiceItem::where('type', InstagramServiceType::Follow->value)->count(),
+            'total_like' => InstagramServiceItem::selectRaw(
+                'SUM(CASE WHEN status = "Completed" THEN 1 ELSE 0 END) as Completed, 
+                 SUM(CASE WHEN status = "Failed" THEN 1 ELSE 0 END) as Failed'
+            )->first(),
+            'total_coment' => InstagramServiceItem::selectRaw(
+                'SUM(CASE WHEN status = "Completed" AND comment IS NOT NULL THEN 1 ELSE 0 END) as Completed, 
+                 SUM(CASE WHEN status = "Failed" AND comment IS NOT NULL THEN 1 ELSE 0 END) as Failed'
+            )->first(),
+            'total_follow' => InstagramServiceItem::selectRaw(
+                'SUM(CASE WHEN status = "Completed" AND type = ? THEN 1 ELSE 0 END) as Completed, 
+                 SUM(CASE WHEN status = "Failed" AND type = ? THEN 1 ELSE 0 END) as Failed',
+                [InstagramServiceType::Follow->value, InstagramServiceType::Follow->value]
+            )->first(),
         ])->title('Dashboard')->layout('layouts.admin.app');
     }
 }
