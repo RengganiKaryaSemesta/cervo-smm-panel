@@ -22,16 +22,15 @@ class Dashboard extends Component
             'total_like' => InstagramServiceItem::selectRaw(
                 'SUM(CASE WHEN status = "Completed" THEN 1 ELSE 0 END) as Completed, 
                  SUM(CASE WHEN status = "Failed" THEN 1 ELSE 0 END) as Failed'
-            )->first(),
+            )->where('type',InstagramServiceType::Like->value)->first(),
             'total_coment' => InstagramServiceItem::selectRaw(
-                'SUM(CASE WHEN status = "Completed" AND comment IS NOT NULL THEN 1 ELSE 0 END) as Completed, 
-                 SUM(CASE WHEN status = "Failed" AND comment IS NOT NULL THEN 1 ELSE 0 END) as Failed'
-            )->first(),
+                'SUM(CASE WHEN status = "Completed" THEN 1 ELSE 0 END) as Completed, 
+                 SUM(CASE WHEN status = "Failed" THEN 1 ELSE 0 END) as Failed'
+            )->where('type',InstagramServiceType::Comment->value)->first(),
             'total_follow' => InstagramServiceItem::selectRaw(
-                'SUM(CASE WHEN status = "Completed" AND type = ? THEN 1 ELSE 0 END) as Completed, 
-                 SUM(CASE WHEN status = "Failed" AND type = ? THEN 1 ELSE 0 END) as Failed',
-                [InstagramServiceType::Follow->value, InstagramServiceType::Follow->value]
-            )->first(),
+                'SUM(CASE WHEN status = "Completed" THEN 1 ELSE 0 END) as Completed, 
+                 SUM(CASE WHEN status = "Failed" THEN 1 ELSE 0 END) as Failed'
+            )->where('type',InstagramServiceType::Follow->value)->first(),
             'total_accounts' => InstagramAccount::selectRaw(
                 'SUM(CASE WHEN status = true THEN 1 ELSE 0 END) as Active, 
                  SUM(CASE WHEN status = false THEN 1 ELSE 0 END) as Inactive'
