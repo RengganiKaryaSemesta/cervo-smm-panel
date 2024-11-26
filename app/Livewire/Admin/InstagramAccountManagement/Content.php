@@ -46,7 +46,8 @@ class Content extends Component
     #[On('offcanvascontrollerdismiss')]
     public function getData()
     {
-        return InstagramAccount::search($this->pagination['search'])->latest()
+        return InstagramAccount::search($this->pagination['search'])
+            ->byUser()->latest()
             ->paginate($this->pagination['limit'])->withQueryString();
     }
     public function delete($id)
