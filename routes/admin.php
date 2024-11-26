@@ -62,6 +62,10 @@ Route::middleware('auth')->group(
                             \App\Livewire\Admin\InstagramServiceReportManagement\Like::class
                         )->name('like');
                         Route::get(
+                            '/manage-account',
+                            \App\Livewire\Admin\InstagramServiceReportManagement\ManageAccount::class
+                        )->name('manage-account');
+                        Route::get(
                             '/comment',
                             \App\Livewire\Admin\InstagramServiceReportManagement\Comment::class
                         )->name('comment');

@@ -2,9 +2,11 @@
     <div class="card">
         <div class="p-6">
             <div class="align-middle">
-                <div
-                    class="flex justify-end flex-col gap-2 md:flex-row items-center">
-                    <x-our-table-input-search/>
+                <div class="flex justify-between flex-col gap-2 md:flex-row items-center">
+                    <div>
+                        <button wire:click="delete" wire:confirm="Are you sure you want to delete this data?" class="btn bg-danger text-white">Delete for safety</button>
+                    </div>
+                    <x-our-table-input-search />
                 </div>
                 <x-our-table>
                     <x-slot name="header">

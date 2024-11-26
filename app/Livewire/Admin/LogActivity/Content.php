@@ -12,6 +12,17 @@ use Spatie\Activitylog\Models\Activity;
 class Content extends Component
 {
     use WithPagination, PaginationVariable;
+    public function delete()
+    {
+        try {
+            \DB::beginTransaction();
+            $this->getData()->delete();
+            \DB::commit();
+        }
+        catch (\Throwable $th) {
+            throw $th;
+        }
+    }
     public function getData()
     {
         return Activity::latest()->where(
@@ -23,14 +34,14 @@ class Content extends Component
                 'description',
                 'LIKE',
                 '%' . $this->pagination['search'] . '%'
-            )->paginate($this->pagination['limit'])->withQueryString();
+            );
     }
     public function render()
     {
         return view(
             'livewire.admin.log-activity.content',
             [
-                'activities' => $this->getData(),
+                'activities' => $this->getData()->paginate($this->pagination['limit'])->withQueryString(),
             ]
         )->title('Log Activity')->layout('layouts.admin.app');
     }

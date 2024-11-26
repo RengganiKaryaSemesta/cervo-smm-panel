@@ -85,6 +85,11 @@
                              'label' => 'Instagram Report',
                              'childrens' => [
                                  [
+                                     'label' => 'Manage Account',
+                                     'route' => 'admin.reports.instagrams.manage-account', // String biasa
+                                     'permissions' => 'read instagram services management',
+                                 ],
+                                 [
                                      'label' => 'Like',
                                      'route' => 'admin.reports.instagrams.like', // String biasa
                                      'permissions' => 'read instagram services management',
