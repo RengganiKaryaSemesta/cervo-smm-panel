@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Models\Concern\Auditable;
 use App\Models\Concern\CounterCode;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class InstagramAccount extends Model
@@ -46,6 +47,27 @@ class InstagramAccount extends Model
                 return $query->where(
                     'created_by',
                     auth()->id()
+                );
+            }
+        );
+    }
+    public function scopeFilterRange($query, array $filters)
+    {
+        $startDate = Carbon::parse($filters['startDate'])->startOfDay()->format('Y-m-d H:i');
+        $endDate   = Carbon::parse($filters['endDate'])->endOfDay()->format('Y-m-d H:i');
+        return $query->where(
+            function ($query) use ($startDate, $endDate) {
+                return $query->when(
+                    $startDate && $endDate,
+                    function ($query) use ($startDate, $endDate) {
+                        return $query->whereBetween(
+                            'updated_at',
+                            [
+                                $startDate,
+                                $endDate,
+                            ]
+                        );
+                    }
                 );
             }
         );
