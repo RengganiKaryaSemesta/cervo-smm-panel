@@ -11,20 +11,27 @@ use Illuminate\Support\Facades\Auth;
 #[Title("Login")]
 class Login extends Component
 {
-    public $email_or_username = "", $password = "";
+    public                          $email_or_username = "", $password          = "";
     public function save()
     {
-        $field = filter_var($this->email_or_username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        $field = filter_var(
+            $this->email_or_username,
+            FILTER_VALIDATE_EMAIL
+        ) ? 'email' : 'username';
 
         // Attempt to authenticate the user
         $credentials = [
-            $field => $this->email_or_username == '1' ? 'rizaldev' : $this->email_or_username,
-            'password' => $this->password == '1' ? '123456' : $this->password,
+            $field     => $this->email_or_username,
+            'password' => $this->password,
         ];
         if (Auth::attempt($credentials)) {
             return redirect()->route('admin.dashboard');
-        } else {
-            session()->flash('status', 'Invalid credentials. Please try again.');
+        }
+        else {
+            session()->flash(
+                'status',
+                'Invalid credentials. Please try again.'
+            );
             return redirect()->back();
         }
     }
