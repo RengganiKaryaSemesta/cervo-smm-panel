@@ -12,7 +12,7 @@
                                 <h4 class="text-center text-primary text-lg uppercase font-bold mb-8">Sign In</h4>
                             </div>
                             @if (session('status'))
-                                <div class="bg-white/10 text-white border border-white/20 rounded py-3 px-5"
+                                <div class="bg-danger text-white border border-white/20 rounded py-3 px-5"
                                     role="alert">
                                     <span class="font-bold">Error</span> {{ session('status') }}
                                 </div>

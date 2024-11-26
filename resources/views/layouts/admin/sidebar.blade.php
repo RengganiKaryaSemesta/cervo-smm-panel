@@ -77,37 +77,39 @@
                          ],
                      ])
                  @endcan
-                 <li class="menu-title">Report</li>
-                 @can('read instagram services management')
-                 @include('layouts.admin.components.side-link-multiple', [
-                     'icon' => 'mdi mdi-instagram',
-                     'label' => 'Instagram Report',
-                     'childrens' => [
-                         [
-                             'label' => 'Like',
-                             'route' => 'admin.reports.instagrams.like', // String biasa
-                             'permissions' => 'read instagram services management',
-                         ],
-                         [
-                             'label' => 'Comment',
-                             'route' => 'admin.reports.instagrams.comment', // String biasa
-                             'permissions' => 'read instagram services management',
-                         ],
-                         [
-                             'label' => 'Follow',
-                             'route' => 'admin.reports.instagrams.follow', // String biasa
-                             'permissions' => 'read instagram services management',
-                         ],
-                     ],
-                 ])
-             @endcan
-                 @can('read log activities management')
-                     @include('layouts.admin.components.side-link', [
-                         'icon' => 'mdi mdi-history',
-                         'label' => 'Log Activity',
-                         'route' => 'admin.log-activities', // String biasa
-                     ])
-                 @endcan
+                 @if (auth()->user()->can('read instagram services management') || auth()->user()->can('read log activities management'))
+                     <li class="menu-title">Report</li>
+                     @can('read instagram services management')
+                         @include('layouts.admin.components.side-link-multiple', [
+                             'icon' => 'mdi mdi-instagram',
+                             'label' => 'Instagram Report',
+                             'childrens' => [
+                                 [
+                                     'label' => 'Like',
+                                     'route' => 'admin.reports.instagrams.like', // String biasa
+                                     'permissions' => 'read instagram services management',
+                                 ],
+                                 [
+                                     'label' => 'Comment',
+                                     'route' => 'admin.reports.instagrams.comment', // String biasa
+                                     'permissions' => 'read instagram services management',
+                                 ],
+                                 [
+                                     'label' => 'Follow',
+                                     'route' => 'admin.reports.instagrams.follow', // String biasa
+                                     'permissions' => 'read instagram services management',
+                                 ],
+                             ],
+                         ])
+                     @endcan
+                     @can('read log activities management')
+                         @include('layouts.admin.components.side-link', [
+                             'icon' => 'mdi mdi-history',
+                             'label' => 'Log Activity',
+                             'route' => 'admin.log-activities', // String biasa
+                         ])
+                     @endcan
+                 @endif
              </ul>
          </div>
      </div>
