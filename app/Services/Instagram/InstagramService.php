@@ -90,7 +90,7 @@ class InstagramService
     public function comment(InstagramServiceModel $instagramServiceModel, $comments = []) : array
     {
         $availableAccounts = InstagramAccount::limit($instagramServiceModel->account_count)
-            ->get();
+            ->get()->where('status',true);
         // Simpan data akun yang melakukan like
         $failed  = false;
         $success = false;
@@ -148,7 +148,7 @@ class InstagramService
         )
             ->where(
                 'status',
-                1
+                true
             )
             ->take($count)
             ->get();
