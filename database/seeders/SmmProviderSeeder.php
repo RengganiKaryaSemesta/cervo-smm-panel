@@ -22,6 +22,13 @@ class SmmProviderSeeder extends Seeder
                 'api_key' => '98cd1a08cb5024a98d7c102e09f06539',
             ]
         );
+        SmmProvider::create(
+            [
+                'name'    => 'justanotherpanel',
+                'api_url' => 'https://justanotherpanel.com/api/v2',
+                'api_key' => '9c529d8c45633384fde84764a28e8d26',
+            ]
+        );
         $permission = [
             Permission::create(
                 [

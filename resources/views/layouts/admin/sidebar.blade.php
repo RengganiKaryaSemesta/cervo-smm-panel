@@ -25,8 +25,16 @@
                  ])
                  @if (auth()->user()->can('read role management') ||
                          auth()->user()->can('read user management') ||
+                         auth()->user()->can('read smm provider management') ||
                          auth()->user()->can('read instagram account management'))
                      <li class="menu-title">Master</li>
+                     @can('read smm provider management')
+                         @include('layouts.admin.components.side-link', [
+                             'icon' => 'mdi mdi-api',
+                             'label' => 'SMM Provider',
+                             'route' => 'admin.smm-provider-managements', // String biasa
+                         ])
+                     @endcan
                      @can('read instagram account management')
                          @include('layouts.admin.components.side-link', [
                              'icon' => 'mdi mdi-instagram',
