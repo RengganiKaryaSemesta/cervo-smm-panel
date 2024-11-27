@@ -15,4 +15,16 @@ class SmmProvider extends Model
         'api_url',
         'api_key',
     ];
+    public function scopeSearch($query, $keywords)
+    {
+        return $query->where(
+            'name',
+            'LIKE',
+            '%' . $keywords . '%'
+        )->orWhere(
+                'api_url',
+                'LIKE',
+                '%' . $keywords . '%'
+            );
+    }
 }

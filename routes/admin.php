@@ -24,6 +24,11 @@ Route::middleware('auth')->group(
         )
             ->name('user-managements')->can('read user management');
         Route::get(
+            '/smm-provider-managements',
+            \App\Livewire\Admin\SmmProviderManagement\Content::class
+        )
+            ->name('smm-provider-managements')->can('read smm provider management');
+        Route::get(
             '/role-managements',
             \App\Livewire\Admin\RoleManagement\Content::class
         )
