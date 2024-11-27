@@ -25,7 +25,8 @@ class DatabaseSeeder extends Seeder
             SuperAdminUserSeeder::class,
             IndoRegionSeeder::class,
             InstagramAccountSeeder::class,
-            InstagramServiceSeeder::class
+            InstagramServiceSeeder::class,
+            SmmProviderSeeder::class,
         ]);
     }
 }
