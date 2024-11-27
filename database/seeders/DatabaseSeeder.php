@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             InstagramAccountSeeder::class,
             InstagramServiceSeeder::class,
             SmmProviderSeeder::class,
+            SmmProviderOrderSeeder::class
         ]);
     }
 }

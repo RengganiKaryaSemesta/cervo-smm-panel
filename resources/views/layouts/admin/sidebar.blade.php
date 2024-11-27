@@ -61,7 +61,8 @@
                          ])
                      @endif
                  @endif
-                 @can('create instagram services management')
+                 @if (auth()->user()->can('read smm provider order management') ||
+                         auth()->user()->can('create instagram services management'))
                      <li class="menu-title">Services</li>
                      @include('layouts.admin.components.side-link-multiple', [
                          'icon' => 'mdi mdi-instagram',
@@ -84,7 +85,12 @@
                              ],
                          ],
                      ])
-                 @endcan
+                     @include('layouts.admin.components.side-link', [
+                         'icon' => 'mdi mdi-beehive-outline',
+                         'label' => 'Others',
+                         'route' => 'admin.services.others.index', // String biasa
+                     ])
+                 @endif
                  @if (auth()->user()->can('read instagram services management') || auth()->user()->can('read log activities management'))
                      <li class="menu-title">Report</li>
                      @can('read instagram services management')

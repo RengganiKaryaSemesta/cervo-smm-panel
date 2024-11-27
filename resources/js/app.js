@@ -9,6 +9,15 @@ document.addEventListener('livewire:navigating', () => {
         htmlElement.classList.remove('sidenav-enable');
     }
 })
+document.addEventListener('livewire:navigated', () => {
+    const selectInput = document.querySelectorAll('.selectize-input');
+    selectInput.forEach(data => {
+        const inputElement = data.querySelector('input');
+        if (inputElement) { // Pastikan elemen input ditemukan
+            inputElement.style.width = 'auto';
+        }
+    })
+})
 Alpine.store('utilities', {
     formatRupiah(num) {
         if (!isNaN(num))

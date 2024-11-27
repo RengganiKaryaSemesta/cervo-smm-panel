@@ -56,6 +56,14 @@ Route::middleware('auth')->group(
                         )->name('follow');
                     }
                 )->middleware(['can:create instagram services management']);
+                Route::prefix('/others')->as('others.')->group(
+                    function () {
+                        Route::get(
+                            '/{code?}',
+                            \App\Livewire\Admin\OtherServiceManagement\Content::class
+                        )->name('index');
+                    }
+                )->middleware(['can:read smm provider order management']);
             }
         );
         Route::prefix('/reports')->as('reports.')->group(
