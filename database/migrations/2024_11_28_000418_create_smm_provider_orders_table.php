@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('smm_provider_orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('service_id');
             $table->unsignedBigInteger('order_id');
             $table->timestamps();
+            $table->softDeletes();
+            $table->auditable();
+            $table->code();
         });
     }
 

@@ -24,26 +24,19 @@ class ApiSmmProvider implements SmmProviderInterface
         /** Add order */
         public function order($data) : Collection
         {
-                $post = array_merge(
-                        [
-                                'key'    => $this->api_key,
-                                'action' => 'add',
-                        ],
-                        $data
-                );
-                return $this->sendRequest($post);
+                return collect($this->sendRequest(['action' => 'add'] + $data));
         }
 
         /** Get order status  */
         public function status($order_id) : Collection
         {
-                return $this->sendRequest(
+                return collect($this->sendRequest(
                         [
                                 'key'    => $this->api_key,
                                 'action' => 'status',
                                 'order'  => $order_id,
                         ]
-                );
+                ));
         }
 
         /** Get orders status */
