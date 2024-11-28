@@ -5,6 +5,10 @@
             <input type="text" class="form-input w-full" id="name" wire:model="form.name">
         </div>
         <div class="mb-4">
+            <label class="block text-gray-600 mb-2" for="service_currency_code">Currency Code</label>
+            <input type="text" class="form-input w-full" id="service_currency_code" wire:model="form.service_currency_code" placeholder="Rp">
+        </div>
+        <div class="mb-4">
             <label class="block text-gray-600 mb-2" for="api_url">API Url</label>
             <input type="text" class="form-input w-full" id="api_url" wire:model="form.api_url">
         </div>

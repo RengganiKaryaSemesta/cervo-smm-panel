@@ -14,6 +14,7 @@ class SmmProvider extends Model
         'name',
         'api_url',
         'api_key',
+        'service_currency_code',
     ];
     public function scopeSearch($query, $keywords)
     {

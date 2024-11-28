@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\OtherServiceManagement;
 
+use App\Jobs\ApiSmmProviderServiceProcess;
 use App\Services\SmmProvider\ApiSmmProvider;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -18,7 +19,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class Content extends Component
 {
     use WithPagination, PaginationVariable;
-    public             $formTitle,$service_category=null;
+    public             $formTitle,  $service_category = null;
     public SmmProvider $smmProvider;
     public             $providers;
     public function mount($code = null)
@@ -67,17 +68,27 @@ class Content extends Component
     #[On('offcanvascontrollerdismiss'), Computed(cache: true)]
     public function getData()
     {
-        $apiSmmProvider = new ApiSmmProvider(
-            $this->smmProvider->api_url,
-            $this->smmProvider->api_key
+        $cacheKey = 'api_smm_provider_service_process_' . $this->smmProvider->code;
+        if (Cache::has($cacheKey)) {
+            $result = Cache::get($cacheKey);
+        }
+        else {
+            ApiSmmProviderServiceProcess::dispatch($this->smmProvider);
+            $result = collect([]);
+        }
+        $result        = $result->when(
+            $this->service_category != null,
+            function ($data) {
+                return $data->where(
+                    'category',
+                    $this->service_category
+                );
+            }
         );
-        $result         = $apiSmmProvider->services()->when($this->service_category!=null,function($data){
-            return $data->where('category',$this->service_category);
-        });
-        $page           = $this->getPage();
-        $perPage        = $this->pagination['limit'];
-        $totalItems     = $result->count();
-        $paginatedData  = $result->forPage(
+        $page          = $this->getPage();
+        $perPage       = $this->pagination['limit'];
+        $totalItems    = $result->count();
+        $paginatedData = $result->forPage(
             $page,
             $perPage
         );
@@ -96,11 +107,14 @@ class Content extends Component
     #[Computed(persist: true, cache: true)]
     public function getCategories()
     {
-        $apiSmmProvider = new ApiSmmProvider(
-            $this->smmProvider->api_url,
-            $this->smmProvider->api_key
-        );
-        $result         = $apiSmmProvider->services();
+        $cacheKey = 'api_smm_provider_service_process_' . $this->smmProvider->code;
+        if (Cache::has($cacheKey)) {
+            $result = Cache::get($cacheKey);
+        }
+        else {
+            ApiSmmProviderServiceProcess::dispatch($this->smmProvider);
+            $result = collect([]);
+        }
         $categories     = $result->pluck('category')->unique();
         return $categories;
     }

@@ -46,17 +46,24 @@
                     </x-slot>
                     @forelse ($data as $item)
                         <tr>
-                            <x-our-table-td>{{ $item['service'] }}</x-our-table-td>
-                            <x-our-table-td>{{ $item['name'] }}</x-our-table-td>
-                            <x-our-table-td>{{ number_format($item['rate'], 2, ',', '.') }}</x-our-table-td>
-                            <x-our-table-td>{{ $item['min'] }}/{{ $item['max'] }}</x-our-table-td>
+                            <x-our-table-td>{{ $item->service }}</x-our-table-td>
+                            <x-our-table-td>{{ $item->name }}</x-our-table-td>
+                            <x-our-table-td>{{ $smmProvider->service_currency_code . $item->rate }}</x-our-table-td>
+                            <x-our-table-td>{{ $item->min }}/{{ $item->max }}</x-our-table-td>
                             <x-our-table-td>Not enough data </x-our-table-td>
-                            <x-our-table-td></x-our-table-td>
+                            <x-our-table-td> <button class="btn bg-primary">Order</button> </x-our-table-td>
                         </tr>
                     @empty
                         <tr>
-                            <x-our-table-td colspan="5" class=" text-center">
-                                <p class="text-center w-full">Data not found!</p>
+                            <x-our-table-td colspan="6" class=" text-center">
+                                <div @if ($data->total() == 0) wire:poll.visible @endif class="text-center w-full">Data not found, please wait a moment as the data is
+                                    being
+                                    processed <br>
+                                    <div class="animate-spin inline-block w-5 h-5 border-[3px] border-current border-t-transparent text-warning rounded-full"
+                                        role="status" aria-label="loading">
+                                        <span class="sr-only">Loading...</span>
+                                        </class>
+                                    </div>
                             </x-our-table-td>
                         </tr>
                     @endforelse

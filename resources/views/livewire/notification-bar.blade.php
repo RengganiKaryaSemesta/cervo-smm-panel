@@ -8,7 +8,7 @@
                 <i data-lucide="bell"></i>
             @endpersist
             <span x-ref="total_notification"
-            wire:poll.15s="handleRefreshData"
+            wire:poll.30s="handleRefreshData"
                 class="absolute top-3 end-1.5 w-4 h-4 flex items-center justify-center rounded-full bg-danger text-white  font-medium text-[10px]">{{ $unread_data->count() }}</span>
         </span>
     </button>
@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <div class="p-4 h-80" data-simplebar>
+        <div class="p-4 h-80" data-simplebar wire:ignore>
             @foreach ($data as $day => $items)
                 <h5 class="text-xs text-gray-500 dark:text-gray-300 mb-2">{{ $day }}</h5>
                 @foreach ($items as $item)

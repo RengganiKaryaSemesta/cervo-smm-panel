@@ -1,11 +1,13 @@
 <?php
 namespace App\Services\SmmProvider;
 
+use App\Services\SmmProvider\DTOs\DTOSmmProviderService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
+use App\Services\SmmProvider\Contracts\SmmProviderInterface;
 
-class ApiSmmProvider
+class ApiSmmProvider implements SmmProviderInterface
 {
         /** API URL */
         public $api_url = '';
@@ -19,7 +21,7 @@ class ApiSmmProvider
         }
 
         /** Add order */
-        public function order($data)
+        public function order($data) : Collection
         {
                 $post = array_merge(
                         [
@@ -28,20 +30,18 @@ class ApiSmmProvider
                         ],
                         $data
                 );
-                return json_decode($this->connect($post));
+                return $this->sendRequest($post);
         }
 
         /** Get order status  */
-        public function status($order_id)
+        public function status($order_id) : Collection
         {
-                return json_decode(
-                        $this->connect(
-                                [
-                                        'key'    => $this->api_key,
-                                        'action' => 'status',
-                                        'order'  => $order_id,
-                                ]
-                        )
+                return $this->sendRequest(
+                        [
+                                'key'    => $this->api_key,
+                                'action' => 'status',
+                                'order'  => $order_id,
+                        ]
                 );
         }
 
@@ -49,7 +49,7 @@ class ApiSmmProvider
         public function multiStatus($order_ids)
         {
                 return json_decode(
-                        $this->connect(
+                        $this->sendRequest(
                                 [
                                         'key'    => $this->api_key,
                                         'action' => 'status',
@@ -65,19 +65,23 @@ class ApiSmmProvider
         /** Get services */
         public function services() : Collection
         {
-                return $this->connect(
+                $response = $this->sendRequest(
                         [
-                                'key'    => $this->api_key,
                                 'action' => 'services',
                         ]
                 );
+
+                return collect(array_map(
+                        fn ($service) => DTOSmmProviderService::fromArray($service),
+                        $response
+                ));
         }
 
         /** Refill order */
         public function refill(int $orderId)
         {
                 return json_decode(
-                        $this->connect(
+                        $this->sendRequest(
                                 [
                                         'key'    => $this->api_key,
                                         'action' => 'refill',
@@ -91,7 +95,7 @@ class ApiSmmProvider
         public function multiRefill(array $orderIds)
         {
                 return json_decode(
-                        $this->connect(
+                        $this->sendRequest(
                                 [
                                         'key'    => $this->api_key,
                                         'action' => 'refill',
@@ -109,7 +113,7 @@ class ApiSmmProvider
         public function refillStatus(int $refillId)
         {
                 return json_decode(
-                        $this->connect(
+                        $this->sendRequest(
                                 [
                                         'key'    => $this->api_key,
                                         'action' => 'refill_status',
@@ -123,7 +127,7 @@ class ApiSmmProvider
         public function multiRefillStatus(array $refillIds)
         {
                 return json_decode(
-                        $this->connect(
+                        $this->sendRequest(
                                 [
                                         'key'     => $this->api_key,
                                         'action'  => 'refill_status',
@@ -141,7 +145,7 @@ class ApiSmmProvider
         public function cancel(array $orderIds)
         {
                 return json_decode(
-                        $this->connect(
+                        $this->sendRequest(
                                 [
                                         'key'    => $this->api_key,
                                         'action' => 'cancel',
@@ -156,49 +160,35 @@ class ApiSmmProvider
         }
 
         /** Get balance */
-        public function balance()
+        public function balance() : Collection
         {
-                return json_decode(
-                        $this->connect(
-                                [
-                                        'key'    => $this->api_key,
-                                        'action' => 'balance',
-                                ]
-                        )
+                return $this->sendRequest(
+                        [
+                                'key'    => $this->api_key,
+                                'action' => 'balance',
+                        ]
                 );
         }
 
-        private function connect($data)
+        private function sendRequest($data) : array
         {
                 try {
-                        $cacheKey = 'api_request_' . md5($this->api_url . json_encode($data));
-
-                        return Cache::remember(
-                                $cacheKey,
-                                now()->addMinutes(10),
-                                function () use ($data) {
-                                        $data["key"] = $this->api_key;
-                                        $response    = Http::post(
-                                                $this->api_url,
-                                                $data
-                                        );
-
-                                        if ($response->successful()) {
-                                                $data       = $response->json();
-                                                $collection = collect($data);
-                                                return $collection;
-                                        }
-
-                                        throw new \Exception(
-                                                "API request failed to connect from " . $this->api_url .
-                                                " with data: " . json_encode($data)
-                                        );
-                                }
+                        $response = Http::post(
+                                $this->api_url,
+                                [
+                                        'key' => $this->api_key,
+                                ] + $data
                         );
+
+                        if ($response->successful()) {
+                                return $response->json();
+                        }
+
+                        return throw new \Exception("Failed API request: " . $response->body());
                 }
-                catch (\Throwable $th) {
-                        \Log::info($th->getMessage());
-                        return collect([]);
+                catch (\Throwable $e) {
+                        \Log::error($e->getMessage());
+                        throw new \Exception("Error communicating with API.");
                 }
         }
 }

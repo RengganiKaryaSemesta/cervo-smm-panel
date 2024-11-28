@@ -10,9 +10,10 @@ use Illuminate\Support\Facades\Validator;
 class Form extends Component
 {
     public $form = [
-        "name"    => "",
-        "api_url" => "",
-        "api_key" => "",
+        "name"                  => "",
+        "api_url"               => "",
+        "api_key"               => "",
+        "service_currency_code" => "",
     ];
     public function submit()
     {
