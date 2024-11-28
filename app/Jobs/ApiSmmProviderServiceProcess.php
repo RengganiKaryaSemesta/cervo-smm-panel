@@ -16,7 +16,7 @@ class ApiSmmProviderServiceProcess implements ShouldQueue, ShouldBeUnique
     /**
      * Create a new job instance.
      */
-    public $timeout = 300;
+    public $timeout = 500;
     public function __construct(public SmmProvider $smmProvider)
     {
         //
@@ -41,7 +41,7 @@ class ApiSmmProviderServiceProcess implements ShouldQueue, ShouldBeUnique
         Cache::put(
             $cacheKey,
             $services,
-            now()->addMinutes(10)
+            now()->addMinutes(60)
         );
     }
 }

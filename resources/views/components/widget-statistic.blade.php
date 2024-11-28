@@ -36,10 +36,11 @@
             </div>
 
         </div>
-
+        @if ($progressbar != 0)
         <div class="flex w-full h-[5px] bg-gray-200 rounded-full overflow-hidden dark:bg-gray-700 mt-6">
             <div class="flex flex-col justify-center overflow-hidden bg-{{ $color }}" role="progressbar"
                 style="width: {{ $progressbar }}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
+        @endif
     </div>
 </div>

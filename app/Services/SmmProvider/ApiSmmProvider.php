@@ -1,6 +1,7 @@
 <?php
 namespace App\Services\SmmProvider;
 
+use App\Services\SmmProvider\DTOs\DTOSmmProviderBalance;
 use App\Services\SmmProvider\DTOs\DTOSmmProviderService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
@@ -71,10 +72,12 @@ class ApiSmmProvider implements SmmProviderInterface
                         ]
                 );
 
-                return collect(array_map(
-                        fn ($service) => DTOSmmProviderService::fromArray($service),
-                        $response
-                ));
+                return collect(
+                        array_map(
+                                fn ($service) => DTOSmmProviderService::fromArray($service),
+                                $response
+                        )
+                );
         }
 
         /** Refill order */
@@ -160,14 +163,16 @@ class ApiSmmProvider implements SmmProviderInterface
         }
 
         /** Get balance */
-        public function balance() : Collection
+        public function balance() : DTOSmmProviderBalance
         {
-                return $this->sendRequest(
+                $result = $this->sendRequest(
                         [
                                 'key'    => $this->api_key,
                                 'action' => 'balance',
                         ]
                 );
+
+                return DTOSmmProviderBalance::fromArray($result);
         }
 
         private function sendRequest($data) : array

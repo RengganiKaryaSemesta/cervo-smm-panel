@@ -62,6 +62,10 @@ Route::middleware('auth')->group(
                             '/{code?}',
                             \App\Livewire\Admin\OtherServiceManagement\Content::class
                         )->name('index');
+                        Route::get(
+                            '/{code}/{serviceId}',
+                            \App\Livewire\Admin\OtherServiceManagement\Form::class
+                        )->name('form')->can('create smm provider order management');
                     }
                 )->middleware(['can:read smm provider order management']);
             }

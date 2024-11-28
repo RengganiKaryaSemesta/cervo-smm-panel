@@ -51,12 +51,15 @@
                             <x-our-table-td>{{ $smmProvider->service_currency_code . $item->rate }}</x-our-table-td>
                             <x-our-table-td>{{ $item->min }}/{{ $item->max }}</x-our-table-td>
                             <x-our-table-td>Not enough data </x-our-table-td>
-                            <x-our-table-td> <button class="btn bg-primary">Order</button> </x-our-table-td>
+                            <x-our-table-td> <a
+                                    href="{{ route('admin.services.others.form', ['code' => $smmProvider->code, 'serviceId' => $item->service]) }}"
+                                    class="btn bg-primary">Order</a> </x-our-table-td>
                         </tr>
                     @empty
                         <tr>
                             <x-our-table-td colspan="6" class=" text-center">
-                                <div @if ($data->total() == 0) wire:poll.visible @endif class="text-center w-full">Data not found, please wait a moment as the data is
+                                <div @if ($data->total() == 0) wire:poll.visible @endif
+                                    class="text-center w-full">Data not found, please wait a moment as the data is
                                     being
                                     processed <br>
                                     <div class="animate-spin inline-block w-5 h-5 border-[3px] border-current border-t-transparent text-warning rounded-full"
@@ -72,9 +75,6 @@
             {{ $data->links() }}
         </div>
     </div>
-    <x-offcanvas title="{{ $formTitle }}">
-        <livewire:admin.instagram-account-management.form />
-    </x-offcanvas>
 
     @script
         <script>

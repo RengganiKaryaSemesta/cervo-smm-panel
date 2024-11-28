@@ -34,37 +34,6 @@ class Content extends Component
         }
         $this->smmProvider = $this->providers->first();
     }
-    public function add()
-    {
-        $this->formTitle = 'Create a new Data';
-        $this->dispatch(
-            'form-event',
-            data: null
-        );
-        $this->dispatch(
-            'offcanvascontroller',
-            data: null
-        );
-    }
-    public function edit($id)
-    {
-        try {
-            $data            = SmmProvider::findOrFail($id);
-            $this->formTitle = 'Edit Data';
-            $this->dispatch(
-                'form-event',
-                data: $data
-            );
-            $this->dispatch('offcanvascontroller');
-        }
-        catch (\Throwable $th) {
-            $this->dispatch(
-                'swal:error',
-                message: $th->getMessage()
-            )->self();
-        }
-
-    }
     #[On('offcanvascontrollerdismiss'), Computed(cache: true)]
     public function getData()
     {

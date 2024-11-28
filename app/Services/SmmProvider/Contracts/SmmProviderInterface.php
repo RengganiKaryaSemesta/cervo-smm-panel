@@ -3,6 +3,7 @@
 namespace App\Services\SmmProvider\Contracts;
 
 use Illuminate\Support\Collection;
+use App\Services\SmmProvider\DTOs\DTOSmmProviderBalance;
 
 interface SmmProviderInterface
 {
@@ -12,5 +13,5 @@ interface SmmProviderInterface
 
     public function services(): Collection;
 
-    public function balance(): Collection;
+    public function balance(): DTOSmmProviderBalance;
 }
