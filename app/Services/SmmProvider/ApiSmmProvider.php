@@ -64,11 +64,13 @@ class ApiSmmProvider implements SmmProviderInterface
                                 'action' => 'services',
                         ]
                 );
-
+                $filteredData = array_filter($response, function($item) {
+                        return stripos($item['name'], 'INSTAGRAM') !== false;
+                    });
                 return collect(
                         array_map(
                                 fn ($service) => DTOSmmProviderService::fromArray($service),
-                                $response
+                                $filteredData
                         )
                 );
         }

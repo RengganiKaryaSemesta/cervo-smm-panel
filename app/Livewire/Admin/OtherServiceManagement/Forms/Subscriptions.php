@@ -56,7 +56,7 @@ class Subscriptions extends Component
                 ->withProperties($this->form)
                 ->log($message);
             \DB::commit();
-            return redirect(url()->previous());
+            $this->reset('form');
         }
         catch (\Throwable $th) {
             $this->dispatch(
