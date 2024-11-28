@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('smm_provider_orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('order_id');
-            $table->timestamps();
+            $table->unsignedBigInteger('smm_provider_id');
+            $table->foreign('smm_provider_id')->on('smm_providers')->references('id')->cascadeOnDelete();
             $table->softDeletes();
             $table->auditable();
             $table->code();
+            $table->timestamps();
         });
     }
 

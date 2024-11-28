@@ -27,10 +27,34 @@ class AppServiceProvider extends ServiceProvider
 
         Paginator::useTailwind();
         Blueprint::macro(
+            'dropCode',
+            function () {
+                $this->dropColumn([
+                    'counter_code',
+                    'code',
+                ]);
+            }
+        );
+        Blueprint::macro(
             'code',
             function () {
                 $this->integer('counter_code')->unique();
                 $this->string('code')->unique();
+            }
+        );
+        Blueprint::macro(
+            'dropAuditable',
+            function () {
+                $this->dropForeign(['created_by']);
+                $this->dropForeign(['updated_by']);
+                $this->dropForeign(['deleted_by']);
+
+                // Drop columns
+                $this->dropColumn([
+                    'created_by',
+                    'updated_by',
+                    'deleted_by',
+                ]);
             }
         );
         Blueprint::macro(

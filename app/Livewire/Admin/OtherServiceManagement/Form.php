@@ -26,12 +26,12 @@ class Form extends Component
         if ($result == null) {
             return abort(404);
         }
-        $searcService  = $result->filter(fn ($data) => $data->service == $serviceId);
-        $this->service = $searcService->flatMap(
+        $searcService          = $result->filter(fn ($data) => $data->service == $serviceId);
+        $this->service         = $searcService->flatMap(
             fn ($data) => [
                 'service'  => $data->service,
                 'name'     => $data->name,
-                'type'     => SmmProviderServiceType::from($data->type),
+                'type'     => $data->type,
                 'category' => $data->category,
                 'rate'     => $data->rate,
                 'cancel'   => $data->cancel,
@@ -40,6 +40,13 @@ class Form extends Component
                 'refill'   => $data->refill,
             ]
         );
+        $this->service['type'] = SmmProviderServiceType::tryFrom($this->service['type']);
+        if ($this->service['type'] == null) {
+            return throw new \Exception(
+                "Type tidak didukung, saat ini belum terserdia",
+                404
+            );
+        }
     }
     public function render()
     {
