@@ -38,15 +38,8 @@
                         </tr>
                     @empty
                         <tr>
-                            <x-our-table-td colspan="5" class=" text-center">
-                                <div class="text-center w-full">Data not found, please wait a moment as the data is
-                                    being
-                                    processed <br>
-                                    <div class="animate-spin inline-block w-5 h-5 border-[3px] border-current border-t-transparent text-warning rounded-full"
-                                        role="status" aria-label="loading">
-                                        <span class="sr-only">Loading...</span>
-                                        </class>
-                                    </div>
+                            <x-our-table-td colspan="9" class=" text-center">
+                                <div class="text-center w-full">Data not found</div>
                             </x-our-table-td>
                         </tr>
                     @endforelse
