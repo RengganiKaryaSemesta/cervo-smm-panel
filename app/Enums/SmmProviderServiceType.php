@@ -6,7 +6,7 @@ enum SmmProviderServiceType: string
 {
     case CustomComments = "Custom Comments";
     case Package        = "Package";
-    case CommentLikes   = "CommentLikes";
+    case CommentLikes   = "Comment Likes";
     case Default        = "Default";
     case Subscriptions  = "Subscriptions";
     public function getComponent() : string
