@@ -7,13 +7,7 @@
                 <input type="text" class="form-input w-full" id="link" wire:model="form.link">
             </div>
 
-            <a href="{{ route('admin.services.others.index', ['code' => request('code')]) }}"
-                class="btn bg-danger text-white">
-                Back
-            </a>
-            <button type="submit" x-on:click="save" class="btn bg-primary">
-                Process
-            </button>
+            @include('livewire.admin.other-service-management.segments.button-form')
         </div>
         <div class="text-xs">
             Refill : {{ $service['refill'] ? 'YES' : 'NO' }} <br>

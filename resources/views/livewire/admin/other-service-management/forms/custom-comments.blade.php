@@ -10,14 +10,7 @@
                 <label class="block text-gray-600 mb-2 capitalize" for="comments">Comments</label>
                 <textarea id="comments" cols="30" rows="10" wire:model="form.comments" class="form-input"></textarea>
             </div>
-
-            <a href="{{ route('admin.services.others.index', ['code' => request('code')]) }}"
-                class="btn bg-danger text-white">
-                Back
-            </a>
-            <button type="submit" x-on:click="save" class="btn bg-primary">
-                Process
-            </button>
+            @include('livewire.admin.other-service-management.segments.button-form')
         </div>
         <div class="text-xs">
             Refill : {{ $service['refill'] ? 'YES' : 'NO' }} <br>
