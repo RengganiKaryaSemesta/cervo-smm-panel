@@ -28,9 +28,6 @@ class Package extends Component
             if ($validate->fails()) {
                 return throw new \Exception($validate->errors()->first());
             }
-
-            $this->form['interval'] = null;
-            $this->form['runs']     = null;
             $this->form['service']  = $this->service['service'];
             \DB::beginTransaction();
             $apiSmmProvider = (new ApiSmmProvider(
