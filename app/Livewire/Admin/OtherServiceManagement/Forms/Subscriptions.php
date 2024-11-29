@@ -10,7 +10,9 @@ use Livewire\Component;
 class Subscriptions extends Component
 {
     public SmmProvider $smmProvider;
-    public             $service,   $form        = [];
+    public             $service,   $form        = [
+        'old_post'=>0
+    ];
     public function submit()
     {
         $validate = \Illuminate\Support\Facades\Validator::make(

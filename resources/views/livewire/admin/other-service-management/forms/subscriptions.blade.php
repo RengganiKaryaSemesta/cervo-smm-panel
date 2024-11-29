@@ -31,7 +31,8 @@
                 <input type="text" class="form-input w-full" id="max" wire:model="form.max">
             </div>
 
-            <a href="{{ url()->previous() }}" class="btn bg-danger text-white">
+            <a href="{{ route('admin.services.others.index', ['code' => request('code')]) }}"
+                class="btn bg-danger text-white">
                 Back
             </a>
             <button type="submit" x-on:click="save" class="btn bg-primary">
