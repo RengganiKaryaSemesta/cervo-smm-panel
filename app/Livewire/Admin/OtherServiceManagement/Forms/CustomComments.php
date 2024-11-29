@@ -17,7 +17,7 @@ class CustomComments extends Component
             $this->form,
             [
                 'link'     => 'required|url',
-                'quantity' => 'required|numeric|min:' . $this->service['min'],
+                'comments' => 'required|string',
             ]
         );
         return $this->store($validate);
