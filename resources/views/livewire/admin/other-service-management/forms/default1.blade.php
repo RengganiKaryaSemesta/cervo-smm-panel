@@ -9,9 +9,11 @@
             <div class="mb-2">
                 <label class="block text-gray-600 mb-2 capitalize" for="quantity">quantity</label>
                 <input type="text" x-mask="99999" min="0" class="form-input w-full" id="quantity"
-                    wire:model="form.quantity">
+                    wire:model.live="form.quantity">
             </div>
-
+            <div class="mb-2">
+                <p>Total: {{$this->calculate()}}</p>
+            </div>
             <a href="{{ route('admin.services.others.index', ['code' => request('code')]) }}"
                 class="btn bg-danger text-white">
                 Back

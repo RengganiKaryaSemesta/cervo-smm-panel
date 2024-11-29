@@ -46,7 +46,7 @@
                     </x-slot>
                     @forelse ($data as $item)
                         <tr>
-                            <x-our-table-td>{{ $item->service }} {{$item->type}}</x-our-table-td>
+                            <x-our-table-td>{{ $item->service }}</x-our-table-td>
                             <x-our-table-td>{{ $item->name }}</x-our-table-td>
                             <x-our-table-td>{{ $smmProvider->service_currency_code . $item->rate }}</x-our-table-td>
                             <x-our-table-td>{{ $item->min }}/{{ $item->max }}</x-our-table-td>

@@ -37,11 +37,11 @@ class Default1 extends Component
                 $this->smmProvider->api_url,
                 $this->smmProvider->api_key
             ))->order($this->form);
-            if (isset($apiSmmProvider['error'])){
+            if (isset($apiSmmProvider['error'])) {
                 return throw new \Exception($apiSmmProvider['error']);
-                
+
             }
-                $data = new SmmProviderOrder;
+            $data                  = new SmmProviderOrder;
             $data->order_id        = $apiSmmProvider['order'];
             $data->smm_provider_id = $this->smmProvider->id;
             $data->saveOrFail();
@@ -66,6 +66,33 @@ class Default1 extends Component
             )->self();
         }
 
+    }
+    public function calculate()
+    {
+        $rate = $this->service['rate']; // Misalnya "12.000,00"
+
+        // Proses konversi format
+        $numericValue = str_replace(
+            '.',
+            '',
+            $rate
+        );
+        $numericValue = str_replace(
+            ',',
+            '.',
+            $numericValue
+        );
+        $numericValue = floatval($numericValue);
+        $quantity     = intval(isset($this->form['quantity']) ? $this->form['quantity'] : 0);
+        // Perhitungan
+        $result = $numericValue * $quantity;
+
+        return number_format(
+            $result,
+            2,
+            ',',
+            '.'
+        );
     }
     public function render()
     {
