@@ -41,7 +41,9 @@
                             <x-our-table-th>Rate/1000</x-our-table-th>
                             <x-our-table-th>Min/Max</x-our-table-th>
                             <x-our-table-th>Average time</x-our-table-th>
-                            <x-our-table-th>Order</x-our-table-th>
+                            @can('read smm provider order management')
+                                <x-our-table-th>Order</x-our-table-th>
+                            @endcan
                         </tr>
                     </x-slot>
                     @forelse ($data as $item)
@@ -51,9 +53,11 @@
                             <x-our-table-td>{{ $smmProvider->service_currency_code . $item->rate }}</x-our-table-td>
                             <x-our-table-td>{{ $item->min }}/{{ $item->max }}</x-our-table-td>
                             <x-our-table-td>Not enough data </x-our-table-td>
-                            <x-our-table-td> <a
-                                    href="{{ route('admin.services.others.form', ['code' => $smmProvider->code, 'serviceId' => $item->service]) }}"
-                                    class="btn bg-primary">Order</a> </x-our-table-td>
+                            @can('read smm provider order management')
+                                <x-our-table-td> <a
+                                        href="{{ route('admin.services.others.form', ['code' => $smmProvider->code, 'serviceId' => $item->service]) }}"
+                                        class="btn bg-primary">Order</a> </x-our-table-td>
+                            @endcan
                         </tr>
                     @empty
                         <tr>

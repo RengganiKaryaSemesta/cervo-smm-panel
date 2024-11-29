@@ -32,7 +32,7 @@
 
             <div class="text-end">
                 <h2 class="text-3xl font-normal text-gray-800 dark:text-white mb-1"> {{ $total }} </h2>
-                <p class="text-gray-400 font-normal">Berdasarkan Periode</p>
+                {{-- <p class="text-gray-400 font-normal">Berdasarkan Periode</p> --}}
             </div>
 
         </div>

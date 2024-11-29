@@ -12,6 +12,15 @@ class SmmProviderOrder extends Model
     use SoftDeletes, Auditable, CounterCode;
     protected $fillable = [
         'order_id',
-        'smm_provider_id'
+        'smm_provider_id',
+        'service',
+        'status',
+        'target',
+        'start_count',
+        'remains',
+        'charge'
     ];
+    public function smmProvider(){
+        return $this->belongsTo(SmmProvider::class);
+    }
 }

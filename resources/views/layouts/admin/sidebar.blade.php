@@ -85,11 +85,13 @@
                              ],
                          ],
                      ])
-                     @include('layouts.admin.components.side-link', [
-                         'icon' => 'mdi mdi-beehive-outline',
-                         'label' => 'Others',
-                         'route' => 'admin.services.others.index', // String biasa
-                     ])
+                     @can('read smm provider order management')
+                         @include('layouts.admin.components.side-link', [
+                             'icon' => 'mdi mdi-beehive-outline',
+                             'label' => 'Others',
+                             'route' => 'admin.services.others.index', // String biasa
+                         ])
+                     @endcan
                  @endif
                  @if (auth()->user()->can('read instagram services management') || auth()->user()->can('read log activities management'))
                      <li class="menu-title">Report</li>
@@ -119,6 +121,13 @@
                                      'permissions' => 'read instagram services management',
                                  ],
                              ],
+                         ])
+                     @endcan
+                     @can('read smm provider order management')
+                         @include('layouts.admin.components.side-link', [
+                             'icon' => 'mdi mdi-beehive-outline',
+                             'label' => 'Others',
+                             'route' => 'admin.reports.others', // String biasa
                          ])
                      @endcan
                      @can('read log activities management')

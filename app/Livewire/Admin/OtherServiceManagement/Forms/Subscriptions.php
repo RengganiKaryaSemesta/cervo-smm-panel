@@ -48,6 +48,8 @@ class Subscriptions extends Component
             $data                  = new SmmProviderOrder;
             $data->order_id        = $apiSmmProvider['order'];
             $data->smm_provider_id = $this->smmProvider->id;
+            $data->service         = "[{$this->service['service']}] {$this->service['name']}";
+            $data->target          = $this->form["username"];
             $data->saveOrFail();
             $this->dispatch("offcanvascontrollerdismiss");
             $message = "Order Service - [{$this->service['service']}] {$this->service['name']}";

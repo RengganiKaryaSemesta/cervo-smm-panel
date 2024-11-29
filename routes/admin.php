@@ -96,6 +96,7 @@ Route::middleware('auth')->group(
                         )->name('detail');
                     }
                 )->middleware(['can:read instagram services management']);
+                Route::get('/others',\App\Livewire\Admin\OtherServiceReportManagement\Content::class)->name('others')->can('read smm provider order management');
             }
         );
     }

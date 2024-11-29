@@ -28,7 +28,7 @@ class Package extends Component
             if ($validate->fails()) {
                 return throw new \Exception($validate->errors()->first());
             }
-            $this->form['service']  = $this->service['service'];
+            $this->form['service'] = $this->service['service'];
             \DB::beginTransaction();
             $apiSmmProvider = (new ApiSmmProvider(
                 $this->smmProvider->api_url,
@@ -41,6 +41,8 @@ class Package extends Component
             $data                  = new SmmProviderOrder;
             $data->order_id        = $apiSmmProvider['order'];
             $data->smm_provider_id = $this->smmProvider->id;
+            $data->target          = $this->form["link"];
+            $data->service         = "[{$this->service['service']}] {$this->service['name']}";
             $data->saveOrFail();
             $this->dispatch("offcanvascontrollerdismiss");
             $message = "Order Service - [{$this->service['service']}] {$this->service['name']}";

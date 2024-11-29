@@ -28,4 +28,11 @@ class SmmProvider extends Model
                 '%' . $keywords . '%'
             );
     }
+    public function orders()
+    {
+        return $this->hasMany(
+            SmmProviderOrder::class,
+            'smm_provider_id'
+        );
+    }
 }

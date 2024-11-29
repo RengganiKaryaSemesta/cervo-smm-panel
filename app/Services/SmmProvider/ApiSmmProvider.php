@@ -3,6 +3,7 @@ namespace App\Services\SmmProvider;
 
 use App\Services\SmmProvider\DTOs\DTOSmmProviderBalance;
 use App\Services\SmmProvider\DTOs\DTOSmmProviderService;
+use App\Services\SmmProvider\DTOs\DTOSmmProviderStatuses;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
@@ -30,28 +31,38 @@ class ApiSmmProvider implements SmmProviderInterface
         /** Get order status  */
         public function status($order_id) : Collection
         {
-                return collect($this->sendRequest(
-                        [
-                                'key'    => $this->api_key,
-                                'action' => 'status',
-                                'order'  => $order_id,
-                        ]
-                ));
+                return collect(
+                        $this->sendRequest(
+                                [
+                                        'action' => 'status',
+                                        'order'  => $order_id,
+                                ]
+                        )
+                );
         }
 
         /** Get orders status */
-        public function multiStatus($order_ids)
+        public function multiStatus(array $order_ids): Collection
         {
-                return json_decode(
-                        $this->sendRequest(
-                                [
-                                        'key'    => $this->api_key,
-                                        'action' => 'status',
-                                        'orders' => implode(
-                                                ",",
-                                                (array) $order_ids
-                                        ),
-                                ]
+                $result       = $this->sendRequest(
+                        [
+                                'action' => 'status',
+                                'orders' => implode(
+                                        ",",
+                                        (array) $order_ids
+                                ),
+                        ]
+                );
+                $filteredData = array_filter(
+                        $result,
+                        function ($item) {
+                                return ! isset($item['error']);
+                        }
+                );
+                return collect(
+                        array_map(
+                                fn ($status) : DTOSmmProviderStatuses => DTOSmmProviderStatuses::fromArray($status),
+                                $filteredData
                         )
                 );
         }
@@ -59,14 +70,20 @@ class ApiSmmProvider implements SmmProviderInterface
         /** Get services */
         public function services() : Collection
         {
-                $response = $this->sendRequest(
+                $response     = $this->sendRequest(
                         [
                                 'action' => 'services',
                         ]
                 );
-                $filteredData = array_filter($response, function($item) {
-                        return stripos($item['name'], 'INSTAGRAM') !== false;
-                    });
+                $filteredData = array_filter(
+                        $response,
+                        function ($item) {
+                                return stripos(
+                                        $item['name'],
+                                        'INSTAGRAM'
+                                ) !== false;
+                        }
+                );
                 return collect(
                         array_map(
                                 fn ($service) => DTOSmmProviderService::fromArray($service),
@@ -179,7 +196,6 @@ class ApiSmmProvider implements SmmProviderInterface
                                         'key' => $this->api_key,
                                 ] + $data
                         );
-
                         if ($response->successful()) {
                                 return $response->json();
                         }
