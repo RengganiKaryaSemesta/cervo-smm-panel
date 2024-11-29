@@ -37,7 +37,7 @@
                             </x-our-table-td>
                             <x-our-table-td class="text-center text-primary w-10">
                                 @can('delete user management')
-                                    @if ($item->deleted_at == null && $item->id != 1)
+                                    @if ($item->deleted_at == null && $item->id != 3)
                                         <button x-on:click="archive({{ $item->id }})"><i
                                                 class="mdi mdi-delete"></i></button>
                                     @elseif ($item->deleted_at !== null)

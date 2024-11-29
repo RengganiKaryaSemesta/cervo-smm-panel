@@ -58,7 +58,7 @@ class Content extends Component
             ['roles' => function ($query) {
                 return $query->select('name');
             }]
-        )->withTrashed()->latest()
+        )->withTrashed()->whereNot('id',1)->latest()
             ->paginate($this->pagination['limit'])->withQueryString();
     }
     public function delete($id)
