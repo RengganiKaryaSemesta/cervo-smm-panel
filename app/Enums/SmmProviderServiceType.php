@@ -4,7 +4,7 @@ namespace App\Enums;
 
 enum SmmProviderServiceType: string
 {
-    case CustomComments = "CustomComments";
+    case CustomComments = "Custom Comments";
     case Package = "Package";
     case CommentLikes = "CommentLikes";
     case Default = "Default";
@@ -13,6 +13,7 @@ enum SmmProviderServiceType: string
         return match ($this){
             self::Default => "default1",
             self::Subscriptions => "subscriptions",
+            self::CustomComments => "custom-comments",
         };
     }
 }

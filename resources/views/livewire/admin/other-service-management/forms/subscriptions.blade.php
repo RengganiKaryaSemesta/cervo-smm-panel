@@ -1,15 +1,7 @@
 <form autocomplete="off" wire:submit.prevent="submit" class="card p-5" x-data="form">
     <article class="grid md:grid-cols-2 gap-2">
         <div>
-            <div class="mb-2">
-                <label class="block text-gray-600 mb-2" for="service">Category</label>
-                <input type="text" class="form-input w-full" id="service" value={{ $service['category'] }} disabled>
-            </div>
-            <div class="mb-2">
-                <label class="block text-gray-600 mb-2" for="service">Service</label>
-                <input type="text" class="form-input w-full" id="service"
-                    value="[{{ $service['service'] }}]{{ $service['name'] }}" disabled>
-            </div>
+            @include('livewire.admin.other-service-management.segments.category-and-service')
             <div class="mb-2">
                 <label class="block text-gray-600 mb-2 capitalize" for="username">username</label>
                 <input type="text" class="form-input w-full" id="username" wire:model="form.username">

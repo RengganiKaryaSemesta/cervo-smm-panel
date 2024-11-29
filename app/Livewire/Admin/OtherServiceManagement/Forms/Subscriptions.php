@@ -11,7 +11,7 @@ class Subscriptions extends Component
 {
     public SmmProvider $smmProvider;
     public             $service,   $form        = [
-        'old_post'=>0
+        'old_post' => 0,
     ];
     public function submit()
     {
@@ -37,11 +37,14 @@ class Subscriptions extends Component
 
             $this->form['delay']   = 0;
             $this->form['service'] = $this->service['service'];
-            $apiSmmProvider        = (new ApiSmmProvider(
+            \DB::beginTransaction();
+            $apiSmmProvider = (new ApiSmmProvider(
                 $this->smmProvider->api_url,
                 $this->smmProvider->api_key
             ))->order($this->form);
-            \DB::beginTransaction();
+            if (isset($apiSmmProvider['error'])) {
+                return throw new \Exception($apiSmmProvider['error']);
+            }
             $data                  = new SmmProviderOrder;
             $data->order_id        = $apiSmmProvider['order'];
             $data->smm_provider_id = $this->smmProvider->id;
