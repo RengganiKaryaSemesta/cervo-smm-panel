@@ -15,10 +15,10 @@ class ManageAccount extends Component
     use WithPagination, PaginationVariable;
     #[Url]
     public $filters = [
-        'status'    => null,
-        'creator'   => null,
-        'startDate' => null,
-        'endDate'   => null,
+        'status'    => NULL,
+        'creator'   => NULL,
+        'startDate' => NULL,
+        'endDate'   => NULL,
     ];
     public function mount()
     {
@@ -46,18 +46,15 @@ class ManageAccount extends Component
                     'created_by',
                     $this->filters['creator']
                 )
-            )
-            ->orderBy(
-                'updated_at',
-                'DESC'
-            )->with('creator');
+            );
     }
     public function render()
     {
         return view(
             'livewire.admin.instagram-service-report-management.manage-account',
             [
-                'data'    => $this->getData()->paginate($this->pagination['limit'])->withQueryString(),
+                'data'    => $this->getData()
+                    ->customSingleOrders($this->pagination)->paginate($this->pagination['limit'])->withQueryString(),
                 'creator' => User::whereHas(
                     'roles',
                     fn ($q) => $q->where(

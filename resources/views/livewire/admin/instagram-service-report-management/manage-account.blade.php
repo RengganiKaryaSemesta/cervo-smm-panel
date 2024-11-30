@@ -1,11 +1,11 @@
 <div>
     <div class="grid md:grid-cols-3 mb-5 gap-2">
-        <x-widget-statistic color="info" title="Total Account" total="{{ $data->total()  }}" progressbar="0"
+        <x-widget-statistic color="info" title="Total Account" total="{{ $data->total() }}" progressbar="0"
             increase_from_last_month_in_percent="0" />
-        <x-widget-statistic color="info" title="Total Account Active" total="{{ $totals->Active  }}" progressbar="0"
+        <x-widget-statistic color="info" title="Total Account Active" total="{{ $totals->Active }}" progressbar="0"
             increase_from_last_month_in_percent="0" />
-        <x-widget-statistic color="info" title="Total Account Inactive" total="{{ $totals->Inactive  }}" progressbar="0"
-            increase_from_last_month_in_percent="0" />
+        <x-widget-statistic color="info" title="Total Account Inactive" total="{{ $totals->Inactive }}"
+            progressbar="0" increase_from_last_month_in_percent="0" />
     </div>
     <div class="card">
         <div class="p-6">
@@ -46,12 +46,12 @@
                 <x-our-table>
                     <x-slot name="header">
                         <tr>
-                            <x-our-table-th>Username</x-our-table-th>
-                            <x-our-table-th>Email</x-our-table-th>
-                            <x-our-table-th>Password</x-our-table-th>
-                            <x-our-table-th>Status</x-our-table-th>
-                            <x-our-table-th>Updated At</x-our-table-th>
-                            <x-our-table-th>Creator</x-our-table-th>
+                            <x-our-table-th orderColumnName="username" :pagination="$pagination">Username</x-our-table-th>
+                            <x-our-table-th orderColumnName="email" :pagination="$pagination">Email</x-our-table-th>
+                            <x-our-table-th orderColumnName="password" :pagination="$pagination">Password</x-our-table-th>
+                            <x-our-table-th orderColumnName="status" :pagination="$pagination">Status</x-our-table-th>
+                            <x-our-table-th orderColumnName="updated_at" :pagination="$pagination">Updated At</x-our-table-th>
+                            <x-our-table-th orderColumnName="creator.name" :pagination="$pagination">Creator</x-our-table-th>
                         </tr>
                     </x-slot>
                     @forelse ($data as $item)

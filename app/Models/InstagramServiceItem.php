@@ -82,7 +82,7 @@ class InstagramServiceItem extends Model
                     $foreignKey   = $relatedModel->getForeignKeyName();
 
                     // Lakukan join bertingkat untuk relasi
-                    $query->join(
+                    $query->leftJoin(
                         $relatedTable,
                         "{$table}.{$foreignKey}",
                         '=',
