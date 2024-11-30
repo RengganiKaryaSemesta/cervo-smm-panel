@@ -6,7 +6,18 @@
                     <div>
                         <a wire:navigate class="btn bg-danger text-white" href="{{route('admin.reports.instagrams.'.$type)}}">Back</a>
                     </div>
-                    <x-our-table-input-search />
+                    <div class="flex gap-2">
+                        <div class="">
+                            <label for="filters_status" class="block text-gray-600 mb-2">Filter by Status</label>
+                            <select id="filters_status" class="form-select" wire:model.live="pagination.filters_status">
+                                <option value="">All</option>
+                                @foreach ($statuses as $item)
+                                    <option value="{{ $item->value }}">{{ $item->label() }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <x-our-table-input-search />
+                    </div>
                 </div>
                 <x-our-table>
                     <x-slot name="header">
