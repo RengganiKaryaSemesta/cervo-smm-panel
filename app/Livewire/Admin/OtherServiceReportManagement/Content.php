@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\OtherServiceReportManagement;
 
+use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\SmmProvider;
 use Livewire\WithPagination;
@@ -14,7 +15,16 @@ use App\Services\SmmProvider\ApiSmmProvider;
 class Content extends Component
 {
     use WithPagination, PaginationVariable;
-    #[Computed(cache: true)]
+    public function mount()
+    {
+        $this->pagination['startDate'] = isset($this->pagination['startDate'])
+            ? Carbon::parse($this->pagination['startDate'])->format('Y-m-d')
+            : now()->startOfMonth()->startOfDay()->format('Y-m-d');
+        $this->pagination['endDate']   = isset($this->pagination['endDate'])
+            ? Carbon::parse($this->pagination['endDate'])->format('Y-m-d')
+            : now()->endOfMonth()->endOfDay()->format('Y-m-d');
+    }
+    #[Computed(cache: TRUE)]
     public function getData()
     {
         ApiSmmProviderStatusProcess::dispatch();
@@ -23,7 +33,9 @@ class Content extends Component
                 'smmProvider',
                 'creator',
             ]
-        )->where(
+        )
+        ->search($this->pagination['search'])
+        ->where(
                 function ($query) {
                     return $query->where(
                         'status',
@@ -38,13 +50,23 @@ class Content extends Component
                             '0'
                         );
                 }
-            )->paginate($this->pagination['limit']);
+            )
+            ->when(
+                isset($this->pagination['filters_status']) && $this->pagination['filters_status'],
+                function ($query) {
+                    return $query->where(
+                        'status',
+                        $this->pagination['filters_status']);
+                })
+                ->filterRange($this->pagination)
+            ->customSingleOrders($this->pagination)
+            ->paginate($this->pagination['limit']);
     }
-    #[Computed(persist: true, seconds: 10000, cache: true, tags: 'get-report-balances')]
+    #[Computed(persist: TRUE, seconds: 10000, cache: TRUE, tags: 'get-report-balances')]
     public function getBalances()
     {
         $smmProviders = SmmProvider::whereNotNull('api_url')->whereNotNull('api_key')->get();
-       return $smmProviders->map(
+        return $smmProviders->map(
             function ($smmProvider) {
                 $result               = cache()->remember(
                     'smm-provider-balance-' . $smmProvider->id,
