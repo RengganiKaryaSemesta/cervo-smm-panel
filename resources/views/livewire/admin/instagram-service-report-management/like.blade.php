@@ -2,21 +2,7 @@
     <div class="card">
         <div class="p-6">
             <div class="align-middle mb-2">
-                <div class="flex justify-between flex-col gap-2 md:flex-row items-center">
-                    <div>
-                    </div>
-                    <x-our-table-input-search x_model="filters.search" />
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label for="startDate" class="block text-gray-600 mb-2 uppercase">Start Date</label>
-                        <input type="date" class="form-input" wire:model.live="filters.startDate" id="startDate">
-                    </div>
-                    <div>
-                        <label for="endDate" class="block text-gray-600 mb-2 uppercase">end Date</label>
-                        <input type="date" class="form-input" wire:model.live="filters.endDate" id="endDate">
-                    </div>
-                </div>
+                @include('livewire.admin.instagram-service-report-management.segments.filters')
                 <x-our-table>
                     <x-slot name="header">
                         <tr>

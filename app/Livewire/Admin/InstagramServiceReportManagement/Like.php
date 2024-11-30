@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\InstagramServiceReportManagement;
 
 use App\Enums\InstagramServiceItemStatus;
+use App\Enums\InstagramServiceStatus;
 use App\Enums\InstagramServiceType;
 use Carbon\Carbon;
 use Livewire\Attributes\Url;
@@ -42,7 +43,7 @@ class Like extends Component
                 InstagramServiceType::Like->value
             )
             ->search($this->filters['search'])
-            ->filterRange($this->filters)
+            ->customFilter($this->filters)
             ->withCount(
                 ['instagramServiceItems as total_completed' => fn ($query) => $query->where(
                     'status',
@@ -63,6 +64,7 @@ class Like extends Component
             'livewire.admin.instagram-service-report-management.like',
             [
                 'data' => $this->getData(),
+                'statuses' => InstagramServiceStatus::cases()
             ]
         )->title('Intagram Report - Like')->layout('layouts.admin.app');
     }

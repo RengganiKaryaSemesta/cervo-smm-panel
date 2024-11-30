@@ -47,22 +47,26 @@ class InstagramService extends Model
             'type'        => InstagramServiceType::class,
         ];
     }
-    public function scopeSearch($query,$keywords){
-        return $query->when($keywords!=null,function($query)use($keywords){
-            return $query->where(function($query)use($keywords){
+    public function scopeSearch($query, $keywords)
+    {
+        return $query->when(
+            $keywords != NULL,
+            function ($query) use ($keywords) {
                 return $query->where(
-                    'url',
-                    'LIKE',
-                    '%' . $keywords . '%'
-                )->orWhere(
-                        'error_msg',
-                        'LIKE',
-                        '%' . $keywords . '%'
-                );
+                    function ($query) use ($keywords) {
+                        return $query->where(
+                            'url',
+                            'LIKE',
+                            '%' . $keywords . '%'
+                        )->orWhere(
+                                'error_msg',
+                                'LIKE',
+                                '%' . $keywords . '%'
+                            );
+                    });
             });
-        });
     }
-    public function scopeFilterRange($query, array $filters)
+    public function scopeCustomFilter($query, array $filters)
     {
         $startDate = Carbon::parse($filters['startDate'])->startOfDay()->format('Y-m-d H:i');
         $endDate   = Carbon::parse($filters['endDate'])->endOfDay()->format('Y-m-d H:i');
@@ -88,7 +92,13 @@ class InstagramService extends Model
                     }
                 );
             }
-        );
+        )->when(
+                isset($filters['filters_status']) && $filters['filters_status'],
+                function ($query) use ($filters) {
+                    return $query->where(
+                        'status',
+                        $filters['filters_status']);
+                });
     }
     public function instagramServiceItems()
     {

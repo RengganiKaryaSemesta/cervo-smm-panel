@@ -9,6 +9,7 @@ use Livewire\WithPagination;
 use App\Models\InstagramService;
 use App\Traits\PaginationVariable;
 use App\Enums\InstagramServiceType;
+use App\Enums\InstagramServiceStatus;
 use App\Enums\InstagramServiceItemStatus;
 
 class Comment extends Component
@@ -40,7 +41,7 @@ class Comment extends Component
                 InstagramServiceType::Comment->value
             )
             ->search($this->filters['search'])
-            ->filterRange($this->filters)
+            ->customFilter($this->filters)
             ->withCount(
                 ['instagramServiceItems as total_completed' => fn ($query) => $query->where(
                     'status',
@@ -61,6 +62,7 @@ class Comment extends Component
             'livewire.admin.instagram-service-report-management.comment',
             [
                 'data' => $this->getData(),
+                'statuses' => InstagramServiceStatus::cases()
             ]
         )->title('Intagram Report - Comment')->layout('layouts.admin.app');
     }
