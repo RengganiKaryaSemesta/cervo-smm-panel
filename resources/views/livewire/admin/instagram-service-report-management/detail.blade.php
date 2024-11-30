@@ -11,12 +11,12 @@
                 <x-our-table>
                     <x-slot name="header">
                         <tr>
-                            <x-our-table-th>Instagram Account</x-our-table-th>
+                            <x-our-table-th orderColumnName="instagramAccount.email" :pagination="$pagination">Instagram Account</x-our-table-th>
                             @if ($isComment)
-                                <x-our-table-th>Comment</x-our-table-th>
+                                <x-our-table-th orderColumnName="comment" :pagination="$pagination">Comment</x-our-table-th>
                             @endif
-                            <x-our-table-th>Status</x-our-table-th>
-                            <x-our-table-th>Error Msg</x-our-table-th>
+                            <x-our-table-th orderColumnName="status" :pagination="$pagination">Status</x-our-table-th>
+                            <x-our-table-th orderColumnName="error_msg" :pagination="$pagination">Error Msg</x-our-table-th>
                         </tr>
                     </x-slot>
                     @forelse ($data as $item)

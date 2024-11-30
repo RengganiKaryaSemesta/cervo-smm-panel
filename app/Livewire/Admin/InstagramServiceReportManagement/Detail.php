@@ -15,12 +15,13 @@ class Detail extends Component
     public InstagramService $instagramService;
     public function getData()
     {
-        return InstagramServiceItem::latest()
-            ->where(
+        return InstagramServiceItem::where(
                 'instagram_service_id',
                 $this->instagramService->id
             )
+            ->with("instagramAccount")
             ->search($this->pagination['search'])
+            ->customOrder($this->pagination)
             ->paginate($this->pagination['limit'])->withQueryString();
     }
     public function render()

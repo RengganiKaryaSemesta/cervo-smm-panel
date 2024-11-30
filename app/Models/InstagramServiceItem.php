@@ -30,7 +30,7 @@ class InstagramServiceItem extends Model
     public function scopeSearch($query, $keywords)
     {
         return $query->when(
-            $keywords != null,
+            $keywords != NULL,
             function (Builder $query) use ($keywords) {
                 return $query->where(
                     function ($query) use ($keywords) {
@@ -38,10 +38,14 @@ class InstagramServiceItem extends Model
                             'error_msg',
                             'LIKE',
                             '%' . $keywords . '%'
-                        )->orWhereHas('instagramAccount',function($query)use($keywords){
-                            return $query->where('email',
-                            'LIKE',
-                            '%' . $keywords . '%');});
+                        )->orWhereHas(
+                                'instagramAccount',
+                                function ($query) use ($keywords) {
+                                    return $query->where(
+                                        'email',
+                                        'LIKE',
+                                        '%' . $keywords . '%');
+                                });
                     }
                 );
             }
@@ -54,6 +58,58 @@ class InstagramServiceItem extends Model
             'instagram_service_id'
         );
     }
+    public function scopeCustomOrder(Builder $query, $order)
+    {
+        if (isset($order['order'][0])) {
+            $path      = $order['order'][0];
+            $direction = strtolower($order['order'][1]);
+
+            if (\Str::contains(
+                $path,
+                '.')) {
+                // Pisahkan relasi dan kolom untuk menangani join bertingkat
+                $relations = explode(
+                    '.',
+                    $path);
+                $column    = array_pop($relations); // Kolom yang akan diurutkan
+                $table     = $query->getModel()->getTable(); // Tabel utama (misalnya: users)
+                $query->select("{$table}.*");
+                // Lakukan join untuk setiap relasi yang ada
+                foreach ($relations as $relation) {
+                    // Dapatkan nama tabel terkait untuk relasi
+                    $relatedModel = $query->getModel()->{$relation}();
+                    $relatedTable = $relatedModel->getRelated()->getTable();
+                    $foreignKey   = $relatedModel->getForeignKeyName();
+
+                    // Lakukan join bertingkat untuk relasi
+                    $query->join(
+                        $relatedTable,
+                        "{$table}.{$foreignKey}",
+                        '=',
+                        "{$relatedTable}.id")
+                        ->addSelect("{$relatedTable}.{$column}");
+
+                    // Update tabel utama untuk join berikutnya
+                    $table = $relatedTable;
+                }
+
+                // Setelah semua join, lakukan orderBy pada kolom yang diinginkan
+                $query->orderBy(
+                    "{$table}.{$column}",
+                    $direction);
+
+            }
+            else {
+                // Jika tidak ada relasi, lakukan pengurutan biasa
+                $query->orderBy(
+                    $path,
+                    $direction);
+            }
+        }
+
+        return $query;
+    }
+
 
     public function instagramAccount()
     {
