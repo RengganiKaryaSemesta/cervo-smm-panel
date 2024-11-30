@@ -110,10 +110,9 @@ class ApiSmmProviderV2 implements SmmProviderInterface
                 $result = $this->sendRequest(
                         [
                                 'key'    => $this->api_key,
-                                'action' => 'balance',
+                                'action' => 'profile',
                         ]
                 );
-
                 return DTOSmmProviderBalance::fromArray($result);
         }
 
