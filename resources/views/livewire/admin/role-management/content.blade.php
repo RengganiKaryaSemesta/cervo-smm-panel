@@ -3,7 +3,7 @@
         <div class="p-6" x-data="initTable">
             <div class="align-middle">
                 <div
-                    class="flex {{ auth()->user()->can('create role management') ? 'justify-between' : 'justify-end' }} flex-col gap-2 md:flex-row items-center">
+                    class="flex {{ auth()->user()->can('create role management') ? 'justify-between' : 'justify-end' }} flex-col gap-2 md:flex-row items-center md:items-end">
                     @can('create role management')
                         <button wire:click="add" type="button" class="btn bg-primary ">Data Baru</button>
                     @endcan
@@ -12,8 +12,8 @@
                 <x-our-table>
                     <x-slot name="header">
                         <tr>
-                            <x-our-table-th>Name</x-our-table-th>
-                            <x-our-table-th>Description</x-our-table-th>
+                            <x-our-table-th  orderColumnName="name" :pagination="$pagination">Name</x-our-table-th>
+                            <x-our-table-th  orderColumnName="description" :pagination="$pagination">Description</x-our-table-th>
                             <x-our-table-th class="w-10">Edit</x-our-table-th>
                             <x-our-table-th class="w-10">Delete</x-our-table-th>
                         </tr>

@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Admin\RoleManagement;
 
+use App\Models\Role;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use Livewire\Attributes\Session;
 use App\Traits\PaginationVariable;
-use Spatie\Permission\Models\Role;
 
 class Content extends Component
 {
@@ -56,7 +56,7 @@ class Content extends Component
                 'description',
                 'LIKE',
                 '%' . $this->pagination['search'] . '%'
-            )->latest()
+            )->customSingleOrders($this->pagination)
             ->paginate($this->pagination['limit'])->withQueryString();
     }
     public function delete($id)

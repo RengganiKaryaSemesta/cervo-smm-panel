@@ -2,9 +2,10 @@
     <div class="card">
         <div class="p-6">
             <div class="align-middle">
-                <div class="flex justify-between flex-col gap-2 md:flex-row items-center">
+                <div class="flex justify-between flex-col gap-2 md:flex-row items-center md:items-end">
                     <div>
-                        <button wire:click="delete" wire:confirm="Are you sure you want to delete this data?" class="btn bg-danger text-white">Delete for safety</button>
+                        <button wire:click="delete" wire:confirm="Are you sure you want to delete this data?"
+                            class="btn bg-danger text-white">Delete for safety</button>
                     </div>
                     <x-our-table-input-search />
                 </div>
@@ -12,9 +13,9 @@
                     <x-slot name="header">
                         <tr>
                             <x-our-table-th orderColumnName="causer.name" :pagination="$pagination">User</x-our-table-th>
-                            <x-our-table-th orderColumnName="log_name" :pagination="$pagination">Judul</x-our-table-th>
-                            <x-our-table-th orderColumnName="description" :pagination="$pagination">Deskripsi</x-our-table-th>
-                            <x-our-table-th orderColumnName="created_at" :pagination="$pagination">Tanggal</x-our-table-th>
+                            <x-our-table-th orderColumnName="log_name" :pagination="$pagination">Title</x-our-table-th>
+                            <x-our-table-th orderColumnName="description" :pagination="$pagination">Description</x-our-table-th>
+                            <x-our-table-th orderColumnName="created_at" :pagination="$pagination">Date</x-our-table-th>
                         </tr>
                     </x-slot>
                     @foreach ($activities as $item)
