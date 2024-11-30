@@ -18,20 +18,21 @@
                 </select>
             </div>
             <div class="align-middle mb-2" x-data="initTable">
-                <div class="flex justify-between flex-col gap-2 md:flex-row items-end">
-                    <div class="w-full">
-                        <div>
-                            <label class="block text-gray-600 mb-2" for="service_category">{{ __('Category') }}</label>
-                            <div wire:ignore>
-                                <select id="service_category" class="w-full" wire:model="service_category">
-                                    <option value="" selected disabled>Pilih satu</option>
-                                    @foreach ($categories as $item)
-                                        <option value="{{ $item }}">{{ $item }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                <div class="grid grid-cols-1 gap-2 md:grid-cols-2">
+                  <div >
+                      <div>
+                          <label class="block text-gray-600 mb-2" for="service_category">{{ __('Category') }}</label>
+                          <div wire:ignore>
+                              <select id="service_category" class="w-full" wire:model="service_category">
+                                  <option value="" selected disabled>Pilih satu</option>
+                                  @foreach ($categories as $item)
+                                      <option value="{{ $item }}">{{ $item }}</option>
+                                  @endforeach
+                              </select>
+                          </div>
+                      </div>
+                  </div>
+                  <x-our-table-input-search/>
                 </div>
                 <x-our-table>
                     <x-slot name="header">
@@ -49,7 +50,7 @@
                     @forelse ($data as $item)
                         <tr>
                             <x-our-table-td>{{ $item->service }}</x-our-table-td>
-                            <x-our-table-td>{{ $item->name }}</x-our-table-td>
+                            <x-our-table-td>{!! $item->name !!}</x-our-table-td>
                             <x-our-table-td>{{ $smmProvider->service_currency_code . $item->rate }}</x-our-table-td>
                             <x-our-table-td>{{ $item->min }}</x-our-table-td>
                             <x-our-table-td>{{ $item->max }}</x-our-table-td>

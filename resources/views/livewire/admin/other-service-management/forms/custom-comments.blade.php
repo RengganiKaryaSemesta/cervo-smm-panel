@@ -17,7 +17,11 @@
             Min. Order : {{ $service['min'] }} <br>
             Max. Order : {{ $service['max'] }} <br>
             Rate : {{ $service['rate'] }} <br>
-            @include('livewire.admin.other-service-management.details.custom-comments')
+            @if ($service['note'] == '')
+                @include('livewire.admin.other-service-management.details.custom-comments')
+            @else
+                {!! $service['note'] !!}
+            @endif
         </div>
     </article>
 

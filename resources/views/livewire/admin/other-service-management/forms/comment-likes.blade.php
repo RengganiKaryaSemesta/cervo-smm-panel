@@ -8,15 +8,16 @@
             </div>
             <div class="mb-2">
                 <label class="block text-gray-600 mb-2 capitalize" for="quantity">quantity</label>
-                <input type="text" x-mask="999999" class="form-input w-full" id="quantity" wire:model.live="form.quantity">
+                <input type="text" x-mask="999999" class="form-input w-full" id="quantity"
+                    wire:model.live="form.quantity">
             </div>
             <div class="mb-2">
                 <label class="block text-gray-600 capitalize" for="username">username</label>
-                <small class="text-xs mb-2">Username of the comment owner               </small>
+                <small class="text-xs mb-2">Username of the comment owner </small>
                 <input type="text" class="form-input w-full" id="username" wire:model="form.username">
             </div>
             <div class="mb-2">
-                <p>Total: {{$this->calculate()}}</p>
+                <p>Total: {{ $this->calculate() }}</p>
             </div>
             @include('livewire.admin.other-service-management.segments.button-form')
         </div>
@@ -25,7 +26,11 @@
             Min. Order : {{ $service['min'] }} <br>
             Max. Order : {{ $service['max'] }} <br>
             Rate : {{ $service['rate'] }} <br>
-            @include('livewire.admin.other-service-management.details.Subscriptions')
+            @if ($service['note'] == '')
+                @include('livewire.admin.other-service-management.details.Subscriptions')
+            @else
+                {!! $service['note'] !!}
+            @endif
         </div>
     </article>
 

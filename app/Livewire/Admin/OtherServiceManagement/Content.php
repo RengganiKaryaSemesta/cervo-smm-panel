@@ -61,6 +61,18 @@ class Content extends Component
                 ? $result->sortByDesc($this->pagination['order'][0])
                 : $result->sortBy($this->pagination['order'][0]);
         }
+        // search dengan this->pagination['search']
+        if ($this->pagination["search"] != "") {
+            $result = $result->filter(
+                function ($item) {
+                    return \Str::contains(
+                        strtolower($item->name),
+                        strtolower($this->pagination["search"]))
+                        || \Str::contains(
+                            strtolower($item->service),
+                            strtolower($this->pagination["search"]));
+                });
+        }
         $page          = $this->getPage();
         $perPage       = $this->pagination['limit'];
         $totalItems    = $result->count();

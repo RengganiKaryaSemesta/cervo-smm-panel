@@ -12,7 +12,7 @@
                     wire:model.live="form.quantity">
             </div>
             <div class="mb-2">
-                <p>Total: {{$this->calculate()}}</p>
+                <p>Total: {{ $this->calculate() }}</p>
             </div>
             @include('livewire.admin.other-service-management.segments.button-form')
         </div>
@@ -21,7 +21,12 @@
             Min. Order : {{ $service['min'] }} <br>
             Max. Order : {{ $service['max'] }} <br>
             Rate : {{ $service['rate'] }} <br>
-            @include('livewire.admin.other-service-management.details.Subscriptions')
+            @if ($service['note'] == '')
+                @include('livewire.admin.other-service-management.details.Subscriptions')
+            @else
+                {!! $service['note'] !!}
+            @endif
+
         </div>
     </article>
 

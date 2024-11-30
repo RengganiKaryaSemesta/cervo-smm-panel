@@ -24,7 +24,7 @@ class Form extends Component
         )->firstOrFail();
         $cacheKey          = 'api_smm_provider_service_process_' . $this->smmProvider->code;
         $result            = Cache::get($cacheKey);
-        if ($result == null) {
+        if ($result == NULL) {
             return abort(404);
         }
         $searcService          = $result->filter(fn ($data) => $data->service == $serviceId);
@@ -38,11 +38,12 @@ class Form extends Component
                 'cancel'   => $data->cancel,
                 'min'      => $data->min,
                 'max'      => $data->max,
+                'note'     => $data->note,
                 'refill'   => $data->refill,
             ]
         );
         $this->service['type'] = SmmProviderServiceType::tryFrom($this->service['type']);
-        if ($this->service['type'] == null) {
+        if ($this->service['type'] == NULL) {
             return throw new \Exception(
                 "Type tidak didukung, saat ini belum terserdia",
                 404
