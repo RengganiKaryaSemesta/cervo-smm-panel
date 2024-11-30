@@ -34,9 +34,9 @@
                         <tr>
                             <x-our-table-th class="w-10"><input type="checkbox" wire:model.live="pagination.selectAll"
                                     class="form-checkbox bg-primary"></x-our-table-th>
-                            <x-our-table-th>Name</x-our-table-th>
-                            <x-our-table-th>Username</x-our-table-th>
-                            <x-our-table-th>Email</x-our-table-th>
+                            <x-our-table-th orderColumnName="name" :pagination="$pagination">Name</x-our-table-th>
+                            <x-our-table-th orderColumnName="username" :pagination="$pagination">Username</x-our-table-th>
+                            <x-our-table-th orderColumnName="email" :pagination="$pagination">Email</x-our-table-th>
                             <x-our-table-th>Role</x-our-table-th>
                             <x-our-table-th>Edit</x-our-table-th>
                             <x-our-table-th>Delete</x-our-table-th>

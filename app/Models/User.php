@@ -93,4 +93,12 @@ class User extends Authenticatable
                         });
                 });
     }
+    public function scopeCustomSingleOrders(Builder $query, array $order)
+    {
+        if(isset($order["order"][0])){
+            return $query->orderBy(
+                 $order["order"][0],
+                 strtolower($order["order"][1]));
+        }
+    }
 }

@@ -57,6 +57,7 @@ class Content extends Component
     {
         return User::search($this->pagination["search"])
             ->customFilters($this->pagination)
+            ->customSingleOrders($this->pagination)
             ->with(
                 ["roles" => function ($query) {
                     return $query->select("name");
@@ -65,7 +66,7 @@ class Content extends Component
             ->withTrashed()
             ->whereNot(
                 "id",
-                1)->latest();
+                1);
     }
     public function delete($id, $type)
     {
