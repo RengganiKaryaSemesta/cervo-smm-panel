@@ -2,12 +2,12 @@
 
 namespace App\Livewire\Admin\LogActivity;
 
+use App\Models\ActivityLog;
 use Livewire\Component;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use Livewire\Attributes\Session;
 use App\Traits\PaginationVariable;
-use Spatie\Activitylog\Models\Activity;
 
 class Content extends Component
 {
@@ -25,7 +25,7 @@ class Content extends Component
     }
     public function getData()
     {
-        return Activity::latest()->where(
+        return ActivityLog::where(
             'log_name',
             'LIKE',
             '%' . $this->pagination['search'] . '%'
@@ -34,7 +34,7 @@ class Content extends Component
                 'description',
                 'LIKE',
                 '%' . $this->pagination['search'] . '%'
-            );
+            )->customSingleOrders($this->pagination);
     }
     public function render()
     {

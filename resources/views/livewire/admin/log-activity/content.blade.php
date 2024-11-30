@@ -11,10 +11,10 @@
                 <x-our-table>
                     <x-slot name="header">
                         <tr>
-                            <x-our-table-th>User</x-our-table-th>
-                            <x-our-table-th>Judul</x-our-table-th>
-                            <x-our-table-th>Deskripsi</x-our-table-th>
-                            <x-our-table-th>Tanggal</x-our-table-th>
+                            <x-our-table-th orderColumnName="causer.name" :pagination="$pagination">User</x-our-table-th>
+                            <x-our-table-th orderColumnName="log_name" :pagination="$pagination">Judul</x-our-table-th>
+                            <x-our-table-th orderColumnName="description" :pagination="$pagination">Deskripsi</x-our-table-th>
+                            <x-our-table-th orderColumnName="created_at" :pagination="$pagination">Tanggal</x-our-table-th>
                         </tr>
                     </x-slot>
                     @foreach ($activities as $item)
