@@ -12,7 +12,7 @@ trait PaginationVariable
         "search"             => "",
         "selectAll"          => FALSE,
         "selecteds"          => [],
-        "filters_by_deleted" => NULL,
+        "filters_by_deleted" => "not_deleted",
         "order"              => [],
     ];
     public function __construct()
