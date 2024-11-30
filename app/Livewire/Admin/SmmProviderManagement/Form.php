@@ -13,6 +13,7 @@ class Form extends Component
         "name"                  => "",
         "api_url"               => "",
         "api_key"               => "",
+        "secret_key"            => "",
         "service_currency_code" => "",
     ];
     public function submit()
@@ -20,9 +21,10 @@ class Form extends Component
         $validate = Validator::make(
             $this->form,
             [
-                "name"    => "required",
-                "api_url" => "url|required",
-                "api_key" => "required",
+                "name"       => "required",
+                "api_url"    => "url|required",
+                "api_key"    => "required",
+                "secret_key" => "nullable",
             ]
         );
         if (isset($this->form["id"])) {
@@ -93,9 +95,9 @@ class Form extends Component
     #[On("form-event")]
     public function formEvent($data)
     {
-        if ($data != null) {
+        if ($data != NULL) {
             $this->form = $data;
-            return true;
+            return TRUE;
         }
         $this->reset("form");
     }

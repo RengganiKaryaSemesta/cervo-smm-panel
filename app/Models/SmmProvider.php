@@ -14,6 +14,7 @@ class SmmProvider extends Model
     protected $fillable = [
         'name',
         'api_url',
+        'secret_key',
         'api_key',
         'service_currency_code',
     ];

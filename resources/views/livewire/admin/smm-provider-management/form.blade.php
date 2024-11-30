@@ -16,6 +16,10 @@
             <label class="block text-gray-600 mb-2" for="api_key">API Key</label>
             <input type="text" class="form-input w-full" id="api_key" wire:model="form.api_key">
         </div>
+        <div class="mb-4">
+            <label class="block text-gray-600 mb-2" for="secret_key">Secret Key</label>
+            <input type="text" class="form-input w-full" id="secret_key" wire:model="form.secret_key">
+        </div>
         <button type="submit" x-on:click="save" class="btn bg-primary">
             Save Data
         </button>

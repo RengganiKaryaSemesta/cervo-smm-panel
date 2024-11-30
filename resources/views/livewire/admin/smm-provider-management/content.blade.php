@@ -28,6 +28,7 @@
                             <x-our-table-th orderColumnName="name" :pagination="$pagination">Name</x-our-table-th>
                             <x-our-table-th orderColumnName="api_url" :pagination="$pagination">API Url</x-our-table-th>
                             <x-our-table-th orderColumnName="api_key" :pagination="$pagination">API Key</x-our-table-th>
+                            <x-our-table-th orderColumnName="secret_key" :pagination="$pagination">Secret Key</x-our-table-th>
                             <x-our-table-th>Edit</x-our-table-th>
                             <x-our-table-th>Delete</x-our-table-th>
                         </tr>
@@ -39,6 +40,7 @@
                             <x-our-table-td>{{ $item->name }}</x-our-table-td>
                             <x-our-table-td>{{ $item->api_url }}</x-our-table-td>
                             <x-our-table-td>{{ $item->api_key }}</x-our-table-td>
+                            <x-our-table-td>{{ $item->secret_key }}</x-our-table-td>
                             <x-our-table-td class="text-center text-primary w-10">
                                 @can('update smm provider management')
                                     @if ($item->deleted_at == null)
