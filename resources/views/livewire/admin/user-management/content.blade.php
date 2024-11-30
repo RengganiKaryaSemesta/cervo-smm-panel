@@ -52,7 +52,7 @@
                             <x-our-table-td> {{ $item->roles?->first()?->name }}</x-our-table-td>
                             <x-our-table-td class="text-center text-primary w-10">
                                 @can('update user management')
-                                    @if ($item->deleted_at == null && $item->id != 1)
+                                    @if ($item->deleted_at == null && $item->id != 3)
                                         <button wire:click="edit({{ $item->id }})"><i
                                                 class="mdi mdi-pencil"></i></button>
                                     @endif
