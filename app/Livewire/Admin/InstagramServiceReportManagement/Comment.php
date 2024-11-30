@@ -32,11 +32,7 @@ class Comment extends Component
     }
     public function getData()
     {
-        return InstagramService::orderBy(
-            'counter_code',
-            'DESC'
-        )
-            ->where(
+        return InstagramService::where(
                 'type',
                 InstagramServiceType::Comment->value
             )
@@ -54,6 +50,7 @@ class Comment extends Component
                     InstagramServiceItemStatus::Failed->value
                 )]
             )
+            ->customOrder($this->pagination)
             ->paginate($this->pagination['limit'])->withQueryString();
     }
     public function render()

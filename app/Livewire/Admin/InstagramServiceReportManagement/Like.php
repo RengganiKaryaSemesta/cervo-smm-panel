@@ -34,11 +34,7 @@ class Like extends Component
     #[On('offcanvascontrollerdismiss')]
     public function getData()
     {
-        return InstagramService::orderBy(
-            'counter_code',
-            'DESC'
-        )
-            ->where(
+        return InstagramService::where(
                 'type',
                 InstagramServiceType::Like->value
             )
@@ -56,6 +52,7 @@ class Like extends Component
                     InstagramServiceItemStatus::Failed->value
                 )]
             )
+            ->customOrder($this->pagination)
             ->paginate($this->pagination['limit'])->withQueryString();
     }
     public function render()

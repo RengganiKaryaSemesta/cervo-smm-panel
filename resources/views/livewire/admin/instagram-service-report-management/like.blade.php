@@ -4,18 +4,7 @@
             <div class="align-middle mb-2">
                 @include('livewire.admin.instagram-service-report-management.segments.filters')
                 <x-our-table>
-                    <x-slot name="header">
-                        <tr>
-                            <x-our-table-th>Started At</x-our-table-th>
-                            <x-our-table-th>Finised At</x-our-table-th>
-                            <x-our-table-th>Url</x-our-table-th>
-                            <x-our-table-th>Number of Account</x-our-table-th>
-                            <x-our-table-th>Total Completed</x-our-table-th>
-                            <x-our-table-th>Total Failed</x-our-table-th>
-                            <x-our-table-th>Status</x-our-table-th>
-                            <x-our-table-th>Detail</x-our-table-th>
-                        </tr>
-                    </x-slot>
+                    @include('livewire.admin.instagram-service-report-management.segments.header')
                     @forelse ($data as $item)
                         <tr>
                             <x-our-table-td>{{ $item->started_at?->format('H:i:s, j F Y') }}</x-our-table-td>

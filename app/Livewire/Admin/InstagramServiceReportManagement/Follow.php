@@ -32,11 +32,7 @@ class Follow extends Component
     }
     public function getData()
     {
-        return InstagramService::orderBy(
-            'counter_code',
-            'DESC'
-        )
-            ->where(
+        return InstagramService::where(
                 'type',
                 InstagramServiceType::Follow->value
             )
@@ -54,6 +50,7 @@ class Follow extends Component
                     InstagramServiceItemStatus::Failed->value
                 )]
             )
+            ->customOrder($this->pagination)
             ->paginate($this->pagination['limit'])->withQueryString();
     }
     public function render()

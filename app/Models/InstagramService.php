@@ -100,6 +100,13 @@ class InstagramService extends Model
                         $filters['filters_status']);
                 });
     }
+    public function scopeCustomOrder($query,$order){
+        if (isset($order["order"][0])) {
+            return $query->orderBy(
+                $order["order"][0],
+                strtolower($order["order"][1]));
+        }
+    }
     public function instagramServiceItems()
     {
         return $this->hasMany(
