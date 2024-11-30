@@ -3,5 +3,5 @@
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 
-Schedule::command('cleanup:softdeleted')->everySecond();
+Schedule::command('cleanup:softdeleted')->daily();
 
