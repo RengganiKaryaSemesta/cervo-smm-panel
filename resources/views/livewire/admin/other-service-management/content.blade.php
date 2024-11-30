@@ -55,7 +55,7 @@
                             <x-our-table-td>{{ $item->min }}</x-our-table-td>
                             <x-our-table-td>{{ $item->max }}</x-our-table-td>
                             @can('read smm provider order management')
-                                <x-our-table-td> <a
+                                <x-our-table-td> <a wire:navigate
                                         href="{{ route('admin.services.others.form', ['code' => $smmProvider->code, 'serviceId' => $item->service]) }}"
                                         class="btn bg-primary">Order</a> </x-our-table-td>
                             @endcan

@@ -19,7 +19,7 @@
                                 </x-badge-status>
                             </x-our-table-td>
                             <x-our-table-td class="text-center text-primary w-10">
-                                <a
+                                <a wire:navigate
                                     href="{{ route('admin.reports.instagrams.detail', ['instagramService' => $item->id]) }}">
                                     <i class="mdi mdi-eye"></i>
                                 </a>
