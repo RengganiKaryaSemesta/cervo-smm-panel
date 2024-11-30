@@ -20,11 +20,11 @@ class Content extends Component
         $this->formTitle = 'Create a new Data';
         $this->dispatch(
             'form-event',
-            data: null
+            data: NULL
         );
         $this->dispatch(
             'offcanvascontroller',
-            data: null
+            data: NULL
         );
     }
     public function edit($id)
@@ -49,28 +49,31 @@ class Content extends Component
     #[On('offcanvascontrollerdismiss')]
     public function getData()
     {
-        return SmmProvider::search($this->pagination['search'])->latest()
-            ->withTrashed(auth()->user()->can('delete smm provider management'))
-            ->paginate($this->pagination['limit'])->withQueryString();
+        return SmmProvider::search($this->pagination['search'])
+            ->customFilters($this->pagination)
+            ->customSingleOrders($this->pagination)
+            ->withTrashed(auth()->user()->can('delete smm provider management'));
     }
-    public function delete($id)
+    public function delete($id, $type)
     {
         try {
-            $data = SmmProvider::withTrashed()->findOrFail($id);
-            if ($data->deleted_at !== null) {
-                $data->deleted_at = null;
-                $message          = "Data {$data->name} telah berhasil di restored";
-
+            $data = SmmProvider::withTrashed()->whereIn(
+                "id",
+                is_array($id) ? $this->pagination["selecteds"] : [$id])->get();
+            foreach ($data as $item) {
+                if ($type === "Restore") {
+                    $item->deleted_at = NULL;
+                    $message          = "Data {$item->name} telah berhasil di restored";
+                }
+                else {
+                    $message = "Data {$item->name} telah berhasil di deleted";
+                    $item->delete();
+                }
+                $item->save();
+                activity('SMM Provider Restore/Delete')
+                    ->causedBy(auth()->user())
+                    ->log($message);
             }
-            else {
-                $message = "Data {$data->name} telah berhasil di deleted";
-                $data->delete();
-            }
-            $data->save();
-            activity('Instagram Account Restore/Delete')
-                ->causedBy(auth()->user())
-                ->performedOn($data)
-                ->log($message);
             $this->dispatch(
                 'swal:success',
                 message: $message
@@ -85,6 +88,8 @@ class Content extends Component
     }
     public function render()
     {
-        return view('livewire.admin.smm-provider-management.content',['data'=>$this->getData()])->title('SMM Provider Management')->layout('layouts.admin.app');
+        return view(
+            'livewire.admin.smm-provider-management.content',
+            ['data' => $this->getData()->paginate($this->pagination['limit'])->withQueryString()])->title('SMM Provider Management')->layout('layouts.admin.app');
     }
 }

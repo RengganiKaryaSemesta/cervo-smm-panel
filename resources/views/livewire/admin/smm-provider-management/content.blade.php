@@ -2,26 +2,40 @@
     <div class="card">
         <div class="p-6">
             <div class="align-middle mb-2" x-data="initTable">
-                <div class="flex justify-between flex-col gap-2 md:flex-row items-center">
+                <div class="flex justify-between flex-col gap-2 md:flex-row md:items-end">
                     <div>
                         @can('create smm provider management')
                             <button wire:click="add" type="button" class="btn bg-primary ">Create Account</button>
                         @endcan
+                        @if ($pagination['selecteds'])
+                            @can('delete user management')
+                                <button x-on:click="archive([])" type="button" class="btn bg-danger">Delete Data</button>
+                                <button x-on:click="archive([],'Restore')" type="button" class="btn bg-warning">Restore
+                                    Data</button>
+                            @endcan
+                        @endif
                     </div>
-                    <x-our-table-input-search />
+                    <div class="flex gap-2 items-center">
+                        <x-our-table-filter-deleted />
+                        <x-our-table-input-search />
+                    </div>
                 </div>
                 <x-our-table>
                     <x-slot name="header">
                         <tr>
-                            <x-our-table-th>Name</x-our-table-th>
-                            <x-our-table-th>API Url</x-our-table-th>
-                            <x-our-table-th>API Key</x-our-table-th>
+                            <x-our-table-th class="w-10"><input type="checkbox" wire:model.live="pagination.selectAll"
+                                class="form-checkbox bg-primary"></x-our-table-th>
+                            <x-our-table-th orderColumnName="name" :pagination="$pagination">Name</x-our-table-th>
+                            <x-our-table-th orderColumnName="api_url" :pagination="$pagination">API Url</x-our-table-th>
+                            <x-our-table-th orderColumnName="api_key" :pagination="$pagination">API Key</x-our-table-th>
                             <x-our-table-th>Edit</x-our-table-th>
                             <x-our-table-th>Delete</x-our-table-th>
                         </tr>
                     </x-slot>
                     @forelse ($data as $item)
                         <tr>
+                            <x-our-table-th class="w-10"><input type="checkbox" wire:model.live="pagination.selecteds" value="{{$item->id}}"
+                                class="form-checkbox bg-primary"></x-our-table-th>
                             <x-our-table-td>{{ $item->name }}</x-our-table-td>
                             <x-our-table-td>{{ $item->api_url }}</x-our-table-td>
                             <x-our-table-td>{{ $item->api_key }}</x-our-table-td>
@@ -68,7 +82,7 @@
             Alpine.data('initTable', () => ({
                 archive(id, type = 'Delete') {
                     Swal.fire({
-                        title: `${type} User`,
+                        title: `${type} Data`,
                         text: 'Are you sure?',
                         icon: 'warning',
                         showCancelButton: true,
@@ -77,7 +91,7 @@
                         showLoaderOnConfirm: true,
                         allowOutsideClick: false,
                         preConfirm: async () => {
-                            await $wire.delete(id);
+                            await $wire.delete(id,type);
                         }
                     })
                 },

@@ -58,12 +58,12 @@ class Content extends Component
         return User::search($this->pagination["search"])
             ->customFilters($this->pagination)
             ->customSingleOrders($this->pagination)
+            ->withTrashed()
             ->with(
                 ["roles" => function ($query) {
                     return $query->select("name");
                 }]
             )
-            ->withTrashed()
             ->whereNot(
                 "id",
                 1);
@@ -91,7 +91,7 @@ class Content extends Component
             $this->dispatch(
                 "swal:success",
                 message: $message
-            );
+            )->self();
         }
         catch (\Throwable $th) {
             $this->dispatch(

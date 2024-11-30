@@ -25,6 +25,7 @@ class Content extends Component
     public function mount($code = null)
     {
         $this->providers = SmmProvider::get();
+        if($this->providers->isEmpty()) abort(404);
         if ($code) {
             $this->smmProvider = SmmProvider::where(
                 'code',
