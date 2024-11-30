@@ -8,10 +8,11 @@ trait PaginationVariable
 {
     #[Url]
     public $pagination = [
-        "limit"     => NULL,
-        "search"    => "",
-        "selectAll" => FALSE,
-        "selecteds" => [],
+        "limit"              => NULL,
+        "search"             => "",
+        "selectAll"          => FALSE,
+        "selecteds"          => [],
+        "filters_by_deleted" => NULL,
     ];
     public function __construct()
     {

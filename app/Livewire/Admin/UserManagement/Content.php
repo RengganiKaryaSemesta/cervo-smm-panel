@@ -10,6 +10,7 @@ use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use Livewire\Attributes\Session;
 use Livewire\Attributes\Computed;
+use Spatie\Permission\Models\Role;
 
 class Content extends Component
 {
@@ -54,11 +55,15 @@ class Content extends Component
     #[On("offcanvascontrollerdismiss")]
     public function getData()
     {
-        return User::search($this->pagination["search"])->with(
-            ["roles" => function ($query) {
-                return $query->select("name");
-            }]
-        )->withTrashed()->whereNot(
+        return User::search($this->pagination["search"])
+            ->customFilters($this->pagination)
+            ->with(
+                ["roles" => function ($query) {
+                    return $query->select("name");
+                }]
+            )
+            ->withTrashed()
+            ->whereNot(
                 "id",
                 1)->latest();
     }
@@ -101,6 +106,7 @@ class Content extends Component
             "livewire.admin.user-management.content",
             [
                 "users" => $this->getData()->paginate($this->pagination["limit"])->withQueryString(),
+                "roles" => Role::get(),
             ]
         )->title("User Management")->layout("layouts.admin.app");
     }

@@ -15,7 +15,19 @@
                             @endcan
                         @endif
                     </div>
-                    <x-our-table-input-search />
+                    <div class="flex gap-2">
+                        <div class="">
+                            <label for="filters_by_roles" class="block text-gray-600 mb-2">Filter by Roles</label>
+                            <select id="filters_by_roles" class="form-select" wire:model.live="pagination.filters_by_roles">
+                                <option value="">All</option>
+                                @foreach ($roles as $item)
+                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <x-our-table-filter-deleted />
+                        <x-our-table-input-search />
+                    </div>
                 </div>
                 <x-our-table>
                     <x-slot name="header">
