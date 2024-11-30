@@ -36,11 +36,11 @@
                 <x-our-table>
                     <x-slot name="header">
                         <tr>
-                            <x-our-table-th>ID</x-our-table-th>
-                            <x-our-table-th>Name</x-our-table-th>
-                            <x-our-table-th>Rate/1000</x-our-table-th>
-                            <x-our-table-th>Min/Max</x-our-table-th>
-                            <x-our-table-th>Average time</x-our-table-th>
+                            <x-our-table-th orderColumnName="service" :pagination="$pagination">ID</x-our-table-th>
+                            <x-our-table-th orderColumnName="name" :pagination="$pagination">Name</x-our-table-th>
+                            <x-our-table-th orderColumnName="rate_number" :pagination="$pagination">Rate/1000</x-our-table-th>
+                            <x-our-table-th orderColumnName="min" :pagination="$pagination">Min</x-our-table-th>
+                            <x-our-table-th orderColumnName="max" :pagination="$pagination">Max</x-our-table-th>
                             @can('read smm provider order management')
                                 <x-our-table-th>Order</x-our-table-th>
                             @endcan
@@ -51,8 +51,8 @@
                             <x-our-table-td>{{ $item->service }}</x-our-table-td>
                             <x-our-table-td>{{ $item->name }}</x-our-table-td>
                             <x-our-table-td>{{ $smmProvider->service_currency_code . $item->rate }}</x-our-table-td>
-                            <x-our-table-td>{{ $item->min }}/{{ $item->max }}</x-our-table-td>
-                            <x-our-table-td>Not enough data </x-our-table-td>
+                            <x-our-table-td>{{ $item->min }}</x-our-table-td>
+                            <x-our-table-td>{{ $item->max }}</x-our-table-td>
                             @can('read smm provider order management')
                                 <x-our-table-td> <a
                                         href="{{ route('admin.services.others.form', ['code' => $smmProvider->code, 'serviceId' => $item->service]) }}"

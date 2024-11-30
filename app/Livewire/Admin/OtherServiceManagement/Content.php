@@ -19,13 +19,14 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class Content extends Component
 {
     use WithPagination, PaginationVariable;
-    public             $formTitle,  $service_category = null;
+    public             $formTitle, $service_category = NULL;
     public SmmProvider $smmProvider;
     public             $providers;
-    public function mount($code = null)
+    public function mount($code = NULL)
     {
         $this->providers = SmmProvider::get();
-        if($this->providers->isEmpty()) abort(404);
+        if ($this->providers->isEmpty())
+            abort(404);
         if ($code) {
             $this->smmProvider = SmmProvider::where(
                 'code',
@@ -35,7 +36,7 @@ class Content extends Component
         }
         $this->smmProvider = $this->providers->first();
     }
-    #[On('offcanvascontrollerdismiss'), Computed(cache: true)]
+    #[On('offcanvascontrollerdismiss'), Computed(cache: TRUE)]
     public function getData()
     {
         $cacheKey = 'api_smm_provider_service_process_' . $this->smmProvider->code;
@@ -46,8 +47,8 @@ class Content extends Component
             ApiSmmProviderServiceProcess::dispatch($this->smmProvider);
             $result = collect([]);
         }
-        $result        = $result->when(
-            $this->service_category != null,
+        $result = $result->when(
+            $this->service_category != NULL,
             function ($data) {
                 return $data->where(
                     'category',
@@ -55,6 +56,11 @@ class Content extends Component
                 );
             }
         );
+        if (isset($this->pagination["order"][0])) {
+            $result = strtolower($this->pagination["order"][1]) == 'desc'
+                ? $result->sortByDesc($this->pagination['order'][0])
+                : $result->sortBy($this->pagination['order'][0]);
+        }
         $page          = $this->getPage();
         $perPage       = $this->pagination['limit'];
         $totalItems    = $result->count();
@@ -74,7 +80,7 @@ class Content extends Component
             ]
         );
     }
-    #[Computed(persist: true, cache: true)]
+    #[Computed(persist: TRUE, cache: TRUE)]
     public function getCategories()
     {
         $cacheKey = 'api_smm_provider_service_process_' . $this->smmProvider->code;
@@ -85,7 +91,7 @@ class Content extends Component
             ApiSmmProviderServiceProcess::dispatch($this->smmProvider);
             $result = collect([]);
         }
-        $categories     = $result->pluck('category')->unique();
+        $categories = $result->pluck('category')->unique();
         return $categories;
     }
     public function render()

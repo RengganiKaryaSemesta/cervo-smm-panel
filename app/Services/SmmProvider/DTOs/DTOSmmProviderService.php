@@ -9,24 +9,26 @@ class DTOSmmProviderService
         public string $rate;
         public int    $min;
         public int    $max;
+        public int    $rate_number;
         public bool   $refill;
         public bool   $cancel;
         public function __construct(array $data)
         {
-                $this->service  = $data['service'];
-                $this->name     = $data['name'];
-                $this->type     = $data['type'];
-                $this->category = $data['category'];
-                $this->rate     = number_format(
+                $this->service     = $data['service'];
+                $this->name        = $data['name'];
+                $this->type        = $data['type'];
+                $this->category    = $data['category'];
+                $this->rate_number = $data['rate'] ?? 0;
+                $this->rate        = number_format(
                         $data['rate'],
                         2,
                         ',',
                         '.'
                 );
-                $this->min      = $data['min'] ?? 0;
-                $this->max      = $data['max'] ?? 0;
-                $this->cancel   = $data['cancel'] ?? false;
-                $this->refill   = $data['refill'] ?? false;
+                $this->min         = $data['min'] ?? 0;
+                $this->max         = $data['max'] ?? 0;
+                $this->cancel      = $data['cancel'] ?? FALSE;
+                $this->refill      = $data['refill'] ?? FALSE;
         }
         public static function fromArray(array $data) : self
         {
