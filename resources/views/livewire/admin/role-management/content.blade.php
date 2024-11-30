@@ -12,10 +12,10 @@
                 <x-our-table>
                     <x-slot name="header">
                         <tr>
-                            <x-our-table-th>Nama</x-our-table-th>
-                            <x-our-table-th>Deskripsi</x-our-table-th>
+                            <x-our-table-th>Name</x-our-table-th>
+                            <x-our-table-th>Description</x-our-table-th>
                             <x-our-table-th class="w-10">Edit</x-our-table-th>
-                            <x-our-table-th class="w-10">Hapus</x-our-table-th>
+                            <x-our-table-th class="w-10">Delete</x-our-table-th>
                         </tr>
                     </x-slot>
                     @foreach ($roles as $item)

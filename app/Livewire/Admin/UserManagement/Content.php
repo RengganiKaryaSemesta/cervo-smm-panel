@@ -18,75 +18,78 @@ class Content extends Component
     public $formTitle;
     public function add()
     {
-        $this->formTitle = 'Create a new User';
+        $this->formTitle = "Create a new User";
         $this->dispatch(
-            'form-event',
-            data: null
+            "form-event",
+            data: NULL
         );
         $this->dispatch(
-            'offcanvascontroller',
-            data: null
+            "offcanvascontroller",
+            data: NULL
         );
     }
     public function edit($id)
     {
         try {
             $user            = User::with(
-                ['roles' => function ($query) {
-                    return $query->select('name');
+                ["roles" => function ($query) {
+                    return $query->select("name");
                 }]
             )->findOrFail($id);
-            $this->formTitle = 'Edit User';
+            $this->formTitle = "Edit User";
             $this->dispatch(
-                'form-event',
+                "form-event",
                 data: $user
             );
-            $this->dispatch('offcanvascontroller');
+            $this->dispatch("offcanvascontroller");
         }
         catch (\Throwable $th) {
             $this->dispatch(
-                'swal:error',
+                "swal:error",
                 message: $th->getMessage()
             )->self();
         }
 
     }
-    #[On('offcanvascontrollerdismiss')]
-    public function getUser()
+    #[On("offcanvascontrollerdismiss")]
+    public function getData()
     {
-        return User::search($this->pagination['search'])->with(
-            ['roles' => function ($query) {
-                return $query->select('name');
+        return User::search($this->pagination["search"])->with(
+            ["roles" => function ($query) {
+                return $query->select("name");
             }]
-        )->withTrashed()->whereNot('id',1)->latest()
-            ->paginate($this->pagination['limit'])->withQueryString();
+        )->withTrashed()->whereNot(
+                "id",
+                1)->latest();
     }
-    public function delete($id)
+    public function delete($id, $type)
     {
         try {
-            $user = User::withTrashed()->findOrFail($id);
-            if ($user->deleted_at !== null) {
-                $user->deleted_at = null;
-                $message          = "User {$user->name} telah berhasil di restored";
-
+            $data = User::withTrashed()->whereIn(
+                "id",
+                is_array($id) ? $this->pagination["selecteds"] : [$id])->get();
+            foreach ($data as $value) {
+                if ($type === "Restore") {
+                    $value->deleted_at = NULL;
+                    $message           = "User telah berhasil di restored";
+                }
+                else {
+                    $message = "User telah berhasil di deleted";
+                    $value->delete();
+                }
+                $value->save();
+                activity("User Restore/Delete")
+                    ->causedBy(auth()->user())
+                    ->log($message);
             }
-            else {
-                $message = "User {$user->name} telah berhasil di deleted";
-                $user->delete();
-            }
-            $user->save();
-            activity('User Restore/Delete')
-                ->causedBy(auth()->user())
-                ->performedOn($user)
-                ->log($message);
             $this->dispatch(
-                'swal:success',
+                "swal:success",
                 message: $message
-            )->self();
+            );
         }
         catch (\Throwable $th) {
             $this->dispatch(
-                'swal:error',
+                "swal:error",
                 message: $th->getMessage()
             )->self();
         }
@@ -95,10 +98,10 @@ class Content extends Component
     public function render()
     {
         return view(
-            'livewire.admin.user-management.content',
+            "livewire.admin.user-management.content",
             [
-                'users' => $this->getUser(),
+                "users" => $this->getData()->paginate($this->pagination["limit"])->withQueryString(),
             ]
-        )->title('User Management')->layout('layouts.admin.app');
+        )->title("User Management")->layout("layouts.admin.app");
     }
 }

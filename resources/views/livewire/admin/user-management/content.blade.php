@@ -2,27 +2,38 @@
     <div class="card">
         <div class="p-6">
             <div class="align-middle mb-2" x-data="initTable">
-                <div
-                    class="flex 
-                {{ auth()->user()->can('create user management') ? 'justify-between' : 'justify-end' }} flex-col gap-2 md:flex-row items-center">
-                    @can('create user management')
-                        <button wire:click="add" type="button" class="btn bg-primary ">Data Baru</button>
-                    @endcan
-                    <x-our-table-input-search/>
+                <div class="flex justify-between flex-col gap-2 md:flex-row md:items-end">
+                    <div>
+                        @can('create user management')
+                            <button wire:click="add" type="button" class="btn bg-primary ">New Data</button>
+                        @endcan
+                        @if ($pagination['selecteds'])
+                            @can('delete user management')
+                                <button x-on:click="archive([])" type="button" class="btn bg-danger">Delete Data</button>
+                                <button x-on:click="archive([],'Restore')" type="button" class="btn bg-warning">Restore
+                                    Data</button>
+                            @endcan
+                        @endif
+                    </div>
+                    <x-our-table-input-search />
                 </div>
                 <x-our-table>
                     <x-slot name="header">
                         <tr>
-                            <x-our-table-th>Nama</x-our-table-th>
+                            <x-our-table-th class="w-10"><input type="checkbox" wire:model.live="pagination.selectAll"
+                                    class="form-checkbox bg-primary"></x-our-table-th>
+                            <x-our-table-th>Name</x-our-table-th>
                             <x-our-table-th>Username</x-our-table-th>
                             <x-our-table-th>Email</x-our-table-th>
                             <x-our-table-th>Role</x-our-table-th>
                             <x-our-table-th>Edit</x-our-table-th>
-                            <x-our-table-th>Hapus</x-our-table-th>
+                            <x-our-table-th>Delete</x-our-table-th>
                         </tr>
                     </x-slot>
                     @foreach ($users as $item)
                         <tr>
+                            <x-our-table-td><input type="checkbox" wire:model.live="pagination.selecteds"
+                                    class="form-checkbox bg-primary" value="{{ $item->id }}"></x-our-table-td>
                             <x-our-table-td>{{ $item->name }}</x-our-table-td>
                             <x-our-table-td>{{ $item->username }}</x-our-table-td>
                             <x-our-table-td>{{ $item->email }}</x-our-table-td>
@@ -46,8 +57,8 @@
                                     @endif
                                 @endcan
                             </x-our-table-td>
+                        </tr>
                     @endforeach
-                    </tr>
                 </x-our-table>
             </div>
             {{ $users->links() }}
@@ -60,38 +71,38 @@
 
     @script
         <script>
-            Alpine.data('initTable', () => ({
-                archive(id, type = 'Delete') {
+            Alpine.data("initTable", () => ({
+                archive(id, type = "Delete") {
                     Swal.fire({
                         title: `${type} User`,
-                        text: 'Are you sure?',
-                        icon: 'warning',
+                        text: "Are you sure?",
+                        icon: "warning",
                         showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
                         showLoaderOnConfirm: true,
                         allowOutsideClick: false,
                         preConfirm: async () => {
-                            await $wire.delete(id);
+                            await $wire.delete(id, type);
                         }
                     })
                 },
                 init() {
-                    $wire.on('swal:error', ({
+                    $wire.on("swal:error", ({
                         message
                     }) => {
                         Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
+                            icon: "error",
+                            title: "Oops...",
                             text: message,
                         })
                     })
-                    $wire.on('swal:success', ({
+                    $wire.on("swal:success", ({
                         message
                     }) => {
                         Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
+                            icon: "success",
+                            title: "Success",
                             text: message,
                         })
                     })
