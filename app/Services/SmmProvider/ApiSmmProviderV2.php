@@ -9,17 +9,19 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use App\Services\SmmProvider\Contracts\SmmProviderInterface;
 
-class ApiSmmProvider implements SmmProviderInterface
+class ApiSmmProviderV2 implements SmmProviderInterface
 {
         /** API URL */
         public $api_url = '';
 
         /** Your API key */
-        public $api_key = '';
-        public function __construct($api_url, $api_key)
+        public $api_key    = '';
+        public $secret_key = '';
+        public function __construct($api_url, $api_key, $secret_key = NULL)
         {
-                $this->api_key = $api_key;
-                $this->api_url = $api_url;
+                $this->api_key    = $api_key;
+                $this->api_url    = $api_url;
+                $this->secret_key = $secret_key;
         }
 
         /** Add order */
@@ -42,7 +44,7 @@ class ApiSmmProvider implements SmmProviderInterface
         }
 
         /** Get orders status */
-        public function multiStatus(array $order_ids): Collection
+        public function multiStatus(array $order_ids) : Collection
         {
                 $result       = $this->sendRequest(
                         [
@@ -81,12 +83,22 @@ class ApiSmmProvider implements SmmProviderInterface
                                 return stripos(
                                         $item['name'],
                                         'INSTAGRAM'
-                                ) !== false;
+                                ) !== FALSE;
                         }
                 );
                 return collect(
                         array_map(
-                                fn ($service) => DTOSmmProviderService::fromArray($service),
+                                fn ($service) => DTOSmmProviderService::fromArray(
+                                        [
+                                                "service"  => $service["id"],
+                                                "name"     => $service["name"],
+                                                "category" => $service["category"],
+                                                "min"      => $service["min"],
+                                                "max"      => $service["max"],
+                                                "rate"     => $service["price"],
+                                                "note"     => $service["note"],
+                                                "type"     => $service["jenis"],
+                                        ]),
                                 $filteredData
                         )
                 );
@@ -108,14 +120,15 @@ class ApiSmmProvider implements SmmProviderInterface
         private function sendRequest($data) : array
         {
                 try {
-                        $response = Http::post(
+                        $response = Http::asForm()->post(
                                 $this->api_url,
                                 [
-                                        'key' => $this->api_key,
+                                        'api_key'    => $this->api_key,
+                                        'secret_key' => $this->secret_key,
                                 ] + $data
                         );
                         if ($response->successful()) {
-                                return $response->json();
+                                return $response->json()["data"];
                         }
 
                         return throw new \Exception("Failed API request: " . $response->body());

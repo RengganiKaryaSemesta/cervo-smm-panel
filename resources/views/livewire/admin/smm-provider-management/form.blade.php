@@ -6,7 +6,15 @@
         </div>
         <div class="mb-4">
             <label class="block text-gray-600 mb-2" for="service_currency_code">Currency Code</label>
-            <input type="text" class="form-input w-full" id="service_currency_code" wire:model="form.service_currency_code" placeholder="Rp">
+            <input type="text" class="form-input w-full" id="service_currency_code"
+                wire:model="form.service_currency_code" placeholder="Rp">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-600 mb-2" for="api_service">API Service</label>
+            <select id="api_service" class="form-select" wire:model="form.api_service">
+                <option value="ApiSmmProvider">ApiSmmProvider</option>
+                <option value="ApiSmmProvider2">ApiSmmProvider2</option>
+            </select>
         </div>
         <div class="mb-4">
             <label class="block text-gray-600 mb-2" for="api_url">API Url</label>
@@ -26,41 +34,45 @@
     </article>
 
     @script
-    <script>
-        Alpine.data('form', () => ({
-            save(e) {
-                e.preventDefault();
-                Swal.fire({
-                    title: 'Save Instagram Account',
-                    text: 'Are you sure?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    showLoaderOnConfirm: true,
-                    allowOutsideClick: false,
-                    preConfirm: async () => {
-                        await $wire.submit();
-                    }
-                });
-            },
-            init() {
-                $wire.on('swal:error', ({ message }) => {
+        <script>
+            Alpine.data('form', () => ({
+                save(e) {
+                    e.preventDefault();
                     Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: message,
+                        title: 'Save Instagram Account',
+                        text: 'Are you sure?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        showLoaderOnConfirm: true,
+                        allowOutsideClick: false,
+                        preConfirm: async () => {
+                            await $wire.submit();
+                        }
                     });
-                });
-                $wire.on('swal:success', ({ message }) => {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: message,
+                },
+                init() {
+                    $wire.on('swal:error', ({
+                        message
+                    }) => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: message,
+                        });
                     });
-                });
-            }
-        }));
-    </script>
+                    $wire.on('swal:success', ({
+                        message
+                    }) => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: message,
+                        });
+                    });
+                }
+            }));
+        </script>
     @endscript
 </form>

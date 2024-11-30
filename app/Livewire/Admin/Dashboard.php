@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Enums\InstagramServiceType;
 use App\Models\InstagramAccount;
 use App\Models\InstagramServiceItem;
+use App\Services\SmmProvider\ApiSmmProviderV2;
 use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\ServiceReport;
@@ -15,26 +16,33 @@ use Illuminate\Support\Facades\Notification;
 
 class Dashboard extends Component
 {
-
     public function render()
     {
-        return view('livewire.admin.dashboard', [
-            'total_like' => InstagramServiceItem::selectRaw(
-                'SUM(CASE WHEN status = "Completed" THEN 1 ELSE 0 END) as Completed, 
+        return view(
+            'livewire.admin.dashboard',
+            [
+                'total_like'     => InstagramServiceItem::selectRaw(
+                    'SUM(CASE WHEN status = "Completed" THEN 1 ELSE 0 END) as Completed, 
                  SUM(CASE WHEN status = "Failed" THEN 1 ELSE 0 END) as Failed'
-            )->where('type',InstagramServiceType::Like->value)->first(),
-            'total_coment' => InstagramServiceItem::selectRaw(
-                'SUM(CASE WHEN status = "Completed" THEN 1 ELSE 0 END) as Completed, 
+                )->where(
+                        'type',
+                        InstagramServiceType::Like->value)->first(),
+                'total_coment'   => InstagramServiceItem::selectRaw(
+                    'SUM(CASE WHEN status = "Completed" THEN 1 ELSE 0 END) as Completed, 
                  SUM(CASE WHEN status = "Failed" THEN 1 ELSE 0 END) as Failed'
-            )->where('type',InstagramServiceType::Comment->value)->first(),
-            'total_follow' => InstagramServiceItem::selectRaw(
-                'SUM(CASE WHEN status = "Completed" THEN 1 ELSE 0 END) as Completed, 
+                )->where(
+                        'type',
+                        InstagramServiceType::Comment->value)->first(),
+                'total_follow'   => InstagramServiceItem::selectRaw(
+                    'SUM(CASE WHEN status = "Completed" THEN 1 ELSE 0 END) as Completed, 
                  SUM(CASE WHEN status = "Failed" THEN 1 ELSE 0 END) as Failed'
-            )->where('type',InstagramServiceType::Follow->value)->first(),
-            'total_accounts' => InstagramAccount::selectRaw(
-                'SUM(CASE WHEN status = true THEN 1 ELSE 0 END) as Active, 
+                )->where(
+                        'type',
+                        InstagramServiceType::Follow->value)->first(),
+                'total_accounts' => InstagramAccount::selectRaw(
+                    'SUM(CASE WHEN status = true THEN 1 ELSE 0 END) as Active, 
                  SUM(CASE WHEN status = false THEN 1 ELSE 0 END) as Inactive'
-            )->first(),
-        ])->title('Dashboard')->layout('layouts.admin.app');
+                )->first(),
+            ])->title('Dashboard')->layout('layouts.admin.app');
     }
 }

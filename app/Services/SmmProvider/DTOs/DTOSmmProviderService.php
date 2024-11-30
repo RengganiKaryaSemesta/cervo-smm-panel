@@ -7,6 +7,7 @@ class DTOSmmProviderService
         public string $type;
         public string $category;
         public string $rate;
+        public string $note;
         public int    $min;
         public int    $max;
         public int    $rate_number;
@@ -29,6 +30,7 @@ class DTOSmmProviderService
                 $this->max         = $data['max'] ?? 0;
                 $this->cancel      = $data['cancel'] ?? FALSE;
                 $this->refill      = $data['refill'] ?? FALSE;
+                $this->note        = $data['note'] ?? "";
         }
         public static function fromArray(array $data) : self
         {

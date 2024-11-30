@@ -14,6 +14,7 @@ class Form extends Component
         "api_url"               => "",
         "api_key"               => "",
         "secret_key"            => "",
+        "api_service"            => "",
         "service_currency_code" => "",
     ];
     public function submit()
@@ -25,6 +26,7 @@ class Form extends Component
                 "api_url"    => "url|required",
                 "api_key"    => "required",
                 "secret_key" => "nullable",
+                "api_service" => "required",
             ]
         );
         if (isset($this->form["id"])) {

@@ -26,6 +26,7 @@
                             <x-our-table-th class="w-10"><input type="checkbox" wire:model.live="pagination.selectAll"
                                 class="form-checkbox bg-primary"></x-our-table-th>
                             <x-our-table-th orderColumnName="name" :pagination="$pagination">Name</x-our-table-th>
+                            <x-our-table-th orderColumnName="api_service" :pagination="$pagination">Api Service</x-our-table-th>
                             <x-our-table-th orderColumnName="api_url" :pagination="$pagination">API Url</x-our-table-th>
                             <x-our-table-th orderColumnName="api_key" :pagination="$pagination">API Key</x-our-table-th>
                             <x-our-table-th orderColumnName="secret_key" :pagination="$pagination">Secret Key</x-our-table-th>
@@ -38,6 +39,7 @@
                             <x-our-table-th class="w-10"><input type="checkbox" wire:model.live="pagination.selecteds" value="{{$item->id}}"
                                 class="form-checkbox bg-primary"></x-our-table-th>
                             <x-our-table-td>{{ $item->name }}</x-our-table-td>
+                            <x-our-table-td>{{ $item->api_service }}</x-our-table-td>
                             <x-our-table-td>{{ $item->api_url }}</x-our-table-td>
                             <x-our-table-td>{{ $item->api_key }}</x-our-table-td>
                             <x-our-table-td>{{ $item->secret_key }}</x-our-table-td>
