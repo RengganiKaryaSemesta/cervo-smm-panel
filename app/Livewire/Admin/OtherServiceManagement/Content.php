@@ -61,6 +61,9 @@ class Content extends Component
                 ? $result->sortByDesc($this->pagination['order'][0])
                 : $result->sortBy($this->pagination['order'][0]);
         }
+        else {
+            $result = $result->sortBy('service');
+        }
         // search dengan this->pagination['search']
         if ($this->pagination["search"] != "") {
             $result = $result->filter(

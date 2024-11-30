@@ -4,6 +4,7 @@ namespace App\Enums;
 
 enum SmmProviderServiceType: string
 {
+    // case Comment = "Comment";
     case CustomComments = "Custom Comments";
     case Package        = "Package";
     case CommentLikes   = "Comment Likes";
@@ -17,6 +18,7 @@ enum SmmProviderServiceType: string
             self::CustomComments => "custom-comments",
             self::CommentLikes   => "comment-likes",
             self::Package        => "package",
+            // self::Comment        => "comment",
         };
     }
 }

@@ -33,7 +33,7 @@
             @if ($service['note'] == '')
                 @include('livewire.admin.other-service-management.details.Subscriptions')
             @else
-                {!! $service['note'] !!}
+                {!! nl2br($service['note']) !!}
             @endif
         </div>
     </article>
