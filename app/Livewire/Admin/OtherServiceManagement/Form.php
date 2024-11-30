@@ -2,11 +2,12 @@
 
 namespace App\Livewire\Admin\OtherServiceManagement;
 
-use App\Enums\SmmProviderServiceType;
-use App\Services\SmmProvider\ApiSmmProvider;
 use Livewire\Component;
 use App\Models\SmmProvider;
+use App\Enums\SmmProviderServiceType;
 use Illuminate\Support\Facades\Cache;
+use App\Services\SmmProvider\ApiSmmProvider;
+use App\Services\SmmProvider\ProviderResolver;
 
 class Form extends Component
 {
@@ -53,10 +54,7 @@ class Form extends Component
         return view(
             'livewire.admin.other-service-management.form',
             [
-                'balance' => (new ApiSmmProvider(
-                    $this->smmProvider->api_url,
-                    $this->smmProvider->api_key
-                ))->balance(),
+                'balance' => (new ProviderResolver)->resolve($this->smmProvider)->balance(),
             ]
         )->title('Other Services - Order')->layout('layouts.admin.app');
     }

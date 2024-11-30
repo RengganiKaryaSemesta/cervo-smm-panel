@@ -13,7 +13,7 @@
             <label class="block text-gray-600 mb-2" for="api_service">API Service</label>
             <select id="api_service" class="form-select" wire:model="form.api_service">
                 <option value="ApiSmmProvider">ApiSmmProvider</option>
-                <option value="ApiSmmProvider2">ApiSmmProvider2</option>
+                <option value="ApiSmmProviderV2">ApiSmmProviderV2</option>
             </select>
         </div>
         <div class="mb-4">

@@ -7,6 +7,7 @@ use App\Models\SmmProvider;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Services\SmmProvider\ApiSmmProvider;
+use App\Services\SmmProvider\ProviderResolver;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 
 class ApiSmmProviderServiceProcess implements ShouldQueue, ShouldBeUnique
@@ -21,7 +22,7 @@ class ApiSmmProviderServiceProcess implements ShouldQueue, ShouldBeUnique
     {
         //
     }
-    public function uniqueId(): string
+    public function uniqueId() : string
     {
         return $this->smmProvider->code;
     }
@@ -34,10 +35,7 @@ class ApiSmmProviderServiceProcess implements ShouldQueue, ShouldBeUnique
         if (cache()->has($cacheKey)) {
             return;
         }
-        $services = (new ApiSmmProvider(
-            $this->smmProvider->api_url,
-            $this->smmProvider->api_key
-        ))->services();
+        $services = (new ProviderResolver)->resolve($this->smmProvider)->services();
         Cache::put(
             $cacheKey,
             $services,

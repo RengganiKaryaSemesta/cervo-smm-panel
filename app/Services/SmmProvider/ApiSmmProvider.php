@@ -13,13 +13,15 @@ class ApiSmmProvider implements SmmProviderInterface
 {
         /** API URL */
         public $api_url = '';
+        public $api_key = '';
 
         /** Your API key */
-        public $api_key = '';
-        public function __construct($api_url, $api_key)
+        public $secret_key = '';
+        public function __construct($api_url, $api_key, $secret_key = NULL)
         {
-                $this->api_key = $api_key;
-                $this->api_url = $api_url;
+                $this->api_key    = $api_key;
+                $this->api_url    = $api_url;
+                $this->secret_key = $secret_key;
         }
 
         /** Add order */
@@ -42,7 +44,7 @@ class ApiSmmProvider implements SmmProviderInterface
         }
 
         /** Get orders status */
-        public function multiStatus(array $order_ids): Collection
+        public function multiStatus(array $order_ids) : Collection
         {
                 $result       = $this->sendRequest(
                         [
@@ -81,7 +83,7 @@ class ApiSmmProvider implements SmmProviderInterface
                                 return stripos(
                                         $item['name'],
                                         'INSTAGRAM'
-                                ) !== false;
+                                ) !== FALSE;
                         }
                 );
                 return collect(

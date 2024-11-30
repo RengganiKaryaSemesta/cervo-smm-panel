@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\SmmProvider;
 use App\Models\SmmProviderOrder;
 use App\Services\SmmProvider\ApiSmmProvider;
+use App\Services\SmmProvider\ProviderResolver;
 
 class CommentLikes extends Component
 {
@@ -58,10 +59,7 @@ class CommentLikes extends Component
             }
             $this->form['service'] = $this->service['service'];
             \DB::beginTransaction();
-            $apiSmmProvider = (new ApiSmmProvider(
-                $this->smmProvider->api_url,
-                $this->smmProvider->api_key
-            ))->order($this->form);
+            $apiSmmProvider = (new ProviderResolver)->resolve($this->smmProvider)->order($this->form);
             if (isset($apiSmmProvider['error'])) {
                 return throw new \Exception($apiSmmProvider['error']);
 

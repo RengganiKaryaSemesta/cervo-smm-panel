@@ -7,6 +7,7 @@ use App\Models\SmmProviderOrder;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Services\SmmProvider\ApiSmmProvider;
+use App\Services\SmmProvider\ProviderResolver;
 
 class ApiSmmProviderStatusProcess implements ShouldQueue
 {
@@ -25,10 +26,7 @@ class ApiSmmProviderStatusProcess implements ShouldQueue
         $smmProviders->each(
             function ($smmProvider) {
                 $orderIds       = $smmProvider->orders?->pluck('order_id')->toArray();
-                $apiSmmProvider = (new ApiSmmProvider(
-                    $smmProvider->api_url,
-                    $smmProvider->api_key
-                ))->multiStatus($orderIds);
+                $apiSmmProvider = (new ProviderResolver)->resolve($smmProvider)->multiStatus($orderIds);
                 foreach ($apiSmmProvider as $key => $value) {
                     $order = SmmProviderOrder::where(
                         'order_id',

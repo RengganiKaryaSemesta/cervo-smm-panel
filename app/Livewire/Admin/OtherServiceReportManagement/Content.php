@@ -11,6 +11,7 @@ use Livewire\Attributes\Computed;
 use App\Traits\PaginationVariable;
 use App\Jobs\ApiSmmProviderStatusProcess;
 use App\Services\SmmProvider\ApiSmmProvider;
+use App\Services\SmmProvider\ProviderResolver;
 
 class Content extends Component
 {
@@ -34,8 +35,8 @@ class Content extends Component
                 'creator',
             ]
         )
-        ->search($this->pagination['search'])
-        ->where(
+            ->search($this->pagination['search'])
+            ->where(
                 function ($query) {
                     return $query->where(
                         'status',
@@ -58,7 +59,7 @@ class Content extends Component
                         'status',
                         $this->pagination['filters_status']);
                 })
-                ->filterRange($this->pagination)
+            ->filterRange($this->pagination)
             ->customSingleOrders($this->pagination)
             ->paginate($this->pagination['limit']);
     }
@@ -72,10 +73,7 @@ class Content extends Component
                     'smm-provider-balance-' . $smmProvider->id,
                     60,
                     function () use ($smmProvider) {
-                        return (new ApiSmmProvider(
-                            $smmProvider->api_url,
-                            $smmProvider->api_key
-                        ))->balance();
+                        return (new ProviderResolver)->resolve($smmProvider)->balance();
                     }
                 );
                 $smmProvider->balance = $result->balance;

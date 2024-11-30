@@ -2,10 +2,11 @@
 
 namespace App\Livewire\Admin\OtherServiceManagement\Forms;
 
+use Livewire\Component;
 use App\Models\SmmProvider;
 use App\Models\SmmProviderOrder;
 use App\Services\SmmProvider\ApiSmmProvider;
-use Livewire\Component;
+use App\Services\SmmProvider\ProviderResolver;
 
 class Subscriptions extends Component
 {
@@ -38,10 +39,7 @@ class Subscriptions extends Component
             $this->form['delay']   = 0;
             $this->form['service'] = $this->service['service'];
             \DB::beginTransaction();
-            $apiSmmProvider = (new ApiSmmProvider(
-                $this->smmProvider->api_url,
-                $this->smmProvider->api_key
-            ))->order($this->form);
+            $apiSmmProvider = (new ProviderResolver)->resolve($this->smmProvider)->order($this->form);
             if (isset($apiSmmProvider['error'])) {
                 return throw new \Exception($apiSmmProvider['error']);
             }
