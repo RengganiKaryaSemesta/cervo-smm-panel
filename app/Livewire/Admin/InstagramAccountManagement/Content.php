@@ -17,11 +17,11 @@ class Content extends Component
         $this->formTitle = 'Create a new Data';
         $this->dispatch(
             'form-event',
-            data: null
+            data: NULL
         );
         $this->dispatch(
             'offcanvascontroller',
-            data: null
+            data: NULL
         );
     }
     public function edit($id)
@@ -47,27 +47,37 @@ class Content extends Component
     public function getData()
     {
         return InstagramAccount::search($this->pagination['search'])
-            ->byUser()->latest()
-            ->paginate($this->pagination['limit'])->withQueryString();
+            ->byUser()->customFilters($this->pagination)
+            ->customSingleOrders($this->pagination)
+            ->withTrashed(auth()->user()->can('delete instagram account management'))
+            ->when(
+                isset($this->pagination["filters_status"]) && $this->pagination["filters_status"],
+                function ($query) {
+                    return $query->where(
+                        'status',
+                        $this->pagination["filters_status"] == "active" ? 1 : 0);
+                });
     }
-    public function delete($id)
+    public function delete($id, $type)
     {
         try {
-            $data = InstagramAccount::withTrashed()->findOrFail($id);
-            if ($data->deleted_at !== null) {
-                $data->deleted_at = null;
-                $message          = "Data {$data->name} telah berhasil di restored";
-
+            $data = InstagramAccount::withTrashed()->whereIn(
+                "id",
+                is_array($id) ? $this->pagination["selecteds"] : [$id])->get();
+            foreach ($data as $item) {
+                if ($type === "Restore") {
+                    $item->deleted_at = NULL;
+                    $message          = "Data {$item->name} telah berhasil di restored";
+                }
+                else {
+                    $message = "Data {$item->name} telah berhasil di deleted";
+                    $item->delete();
+                }
+                $item->save();
+                activity('Instagram Account Restore/Delete')
+                    ->causedBy(auth()->user())
+                    ->log($message);
             }
-            else {
-                $message = "Data {$data->name} telah berhasil di deleted";
-                $data->delete();
-            }
-            $data->save();
-            activity('Instagram Account Restore/Delete')
-                ->causedBy(auth()->user())
-                ->performedOn($data)
-                ->log($message);
             $this->dispatch(
                 'swal:success',
                 message: $message
@@ -85,7 +95,7 @@ class Content extends Component
         return view(
             'livewire.admin.instagram-account-management.content',
             [
-                'data' => $this->getData(),
+                'data' => $this->getData()->paginate($this->pagination['limit'])->withQueryString(),
             ]
         )->title('Instagram Account Management')->layout('layouts.admin.app');
     }

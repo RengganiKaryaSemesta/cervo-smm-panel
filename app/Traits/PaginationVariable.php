@@ -13,7 +13,7 @@ trait PaginationVariable
         "selectAll"          => FALSE,
         "selecteds"          => [],
         "filters_by_deleted" => NULL,
-        "order"             => [],
+        "order"              => [],
     ];
     public function __construct()
     {
@@ -21,6 +21,16 @@ trait PaginationVariable
             "custom.PAGINATION_LIMIT",
             10
         );
+    }
+    public function updatedPagination($data, $key)
+    {
+        if ($key != "selectAll" && ! str_contains(
+            $key,
+            "selecteds")) {
+            $this->pagination["selectAll"] = FALSE;
+            $this->pagination["selecteds"] = [];
+            $this->resetPage();
+        }
     }
     public function updatedPaginationSelectAll($data)
     {

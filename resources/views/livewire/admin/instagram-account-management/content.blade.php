@@ -2,27 +2,51 @@
     <div class="card">
         <div class="p-6">
             <div class="align-middle mb-2" x-data="initTable">
-                <div class="flex justify-between flex-col gap-2 md:flex-row items-center">
-                    <div>
+                <div class="flex justify-between flex-wrap gap-2 flex-row md:items-end">
+                    <div class="flex items-center gap-2 flex-wrap">
                         @can('create instagram account management')
                             <button wire:click="add" type="button" class="btn bg-primary ">Create Account</button>
                         @endcan
+                        @if ($pagination['selecteds'])
+                            @can('delete user management')
+                                <button x-on:click="archive([])" type="button" class="btn bg-danger">Delete Data</button>
+                                <button x-on:click="archive([],'Restore')" type="button" class="btn bg-warning">Restore
+                                    Data</button>
+                            @endcan
+                        @endif
                     </div>
-                    <x-our-table-input-search />
+                    <div class="flex gap-2 items-center">
+                        <div class="">
+                            <label for="filters_status" class="block text-gray-600 mb-2">Filter by Status</label>
+                            <select id="filters_status" class="form-select" wire:model.live="pagination.filters_status">
+                                <option value="">All</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                        @can('delete user management')
+                            <x-our-table-filter-deleted />
+                        @endcan
+                        <x-our-table-input-search />
+                    </div>
                 </div>
                 <x-our-table>
                     <x-slot name="header">
                         <tr>
-                            <x-our-table-th>Username</x-our-table-th>
-                            <x-our-table-th>Email</x-our-table-th>
-                            <x-our-table-th>Password</x-our-table-th>
-                            <x-our-table-th>Status</x-our-table-th>
+                            <x-our-table-th class="w-10"><input type="checkbox" wire:model.live="pagination.selectAll"
+                                    class="form-checkbox bg-primary"></x-our-table-th>
+                            <x-our-table-th orderColumnName="username" :pagination="$pagination">Username</x-our-table-th>
+                            <x-our-table-th orderColumnName="email" :pagination="$pagination">Email</x-our-table-th>
+                            <x-our-table-th orderColumnName="password" :pagination="$pagination">Password</x-our-table-th>
+                            <x-our-table-th orderColumnName="status" :pagination="$pagination">Status</x-our-table-th>
                             <x-our-table-th>Edit</x-our-table-th>
                             <x-our-table-th>Delete</x-our-table-th>
                         </tr>
                     </x-slot>
                     @forelse ($data as $item)
                         <tr>
+                            <x-our-table-th class="w-10"><input type="checkbox" wire:model.live="pagination.selecteds"
+                                    value="{{ $item->id }}" class="form-checkbox bg-primary"></x-our-table-th>
                             <x-our-table-td>{{ $item->username }}</x-our-table-td>
                             <x-our-table-td>{{ $item->email }}</x-our-table-td>
                             <x-our-table-td>{{ $item->password }}</x-our-table-td>
@@ -79,7 +103,7 @@
                         showLoaderOnConfirm: true,
                         allowOutsideClick: false,
                         preConfirm: async () => {
-                            await $wire.delete(id);
+                            await $wire.delete(id, type);
                         }
                     })
                 },

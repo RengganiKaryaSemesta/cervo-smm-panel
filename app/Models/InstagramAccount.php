@@ -72,6 +72,24 @@ class InstagramAccount extends Model
             }
         );
     }
+    public function scopeCustomFilters(Builder $query, array $filters)
+    {
+        return $query->when(
+            $filters["filters_by_deleted"],
+            function ($query) use ($filters) {
+                return $filters["filters_by_deleted"] == "deleted"
+                    ? $query->whereNotNull("deleted_at")
+                    : $query->whereNull("deleted_at");
+            });
+    }
+    public function scopeCustomSingleOrders(Builder $query, array $order)
+    {
+        if (isset($order["order"][0])) {
+            return $query->orderBy(
+                $order["order"][0],
+                strtolower($order["order"][1]));
+        }
+    }
     public function instagramServiceItems()
     {
         return $this->hasMany(
