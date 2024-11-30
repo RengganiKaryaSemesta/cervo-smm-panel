@@ -30,15 +30,14 @@ class Default1 extends Component
                 return throw new \Exception($validate->errors()->first());
             }
 
-            $this->form['interval'] = null;
-            $this->form['runs']     = null;
+            $this->form['interval'] = NULL;
+            $this->form['runs']     = NULL;
             $this->form['service']  = $this->service['service'];
 
             \DB::beginTransaction();
             $apiSmmProvider = (new ProviderResolver)->resolve($this->smmProvider)->order($this->form);
-            if (isset($apiSmmProvider['error'])) {
-                return throw new \Exception($apiSmmProvider['error']);
-
+            if (isset($apiSmmProvider['error']) || isset($apiSmmProvider["msg"])) {
+                return throw new \Exception($apiSmmProvider['error'] ?? $apiSmmProvider["msg"]);
             }
             $data                  = new SmmProviderOrder;
             $data->order_id        = $apiSmmProvider['order'];
