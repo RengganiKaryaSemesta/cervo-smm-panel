@@ -85,7 +85,7 @@ class Default1 extends Component
         $numericValue = floatval($numericValue);
         $quantity     = intval(isset($this->form['quantity']) ? $this->form['quantity'] : 0);
         // Perhitungan
-        $result = $numericValue * $quantity;
+        $result = ($numericValue /1000) * $quantity;
 
         return number_format(
             $result,

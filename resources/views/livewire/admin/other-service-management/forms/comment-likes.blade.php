@@ -25,7 +25,7 @@
             Refill : {{ $service['refill'] ? 'YES' : 'NO' }} <br>
             Min. Order : {{ $service['min'] }} <br>
             Max. Order : {{ $service['max'] }} <br>
-            Rate : {{ $service['rate'] }} <br>
+            Rate : {{ $service['rate'] }}/1000 <br>
             @if ($service['note'] == '')
                 @include('livewire.admin.other-service-management.details.Subscriptions')
             @else
